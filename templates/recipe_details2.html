@@ -1,0 +1,683 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+  <link href='https://fonts.googleapis.com/css?family=Audiowide' rel='stylesheet'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <!-- icons -->
+  <link href="https://pro.fontawesome.com/releases/v6.0.0-beta3/css/all.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+  <link href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css" rel="stylesheet">
+  <!-- font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&display=swap" rel="stylesheet">
+  <!-- Add Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <title>Flavour Fusion</title>
+<style>
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index:3;
+    top: 0;
+    right: 0;
+    background-color: #ffffff;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+  }
+
+  .sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 20px;
+    color: rgb(0, 0, 0);
+    display: block;
+    transition: 0.3s;
+  }
+
+  .sidenav a:hover {
+    color: #ff8929ef;
+  }
+
+  .sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+  }
+
+  .nav {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    background: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    z-index: 2;
+  }
+
+  .logo {
+    color: #ff8929ef;
+    display: flex;
+    align-items: center;
+  }
+  .logo i {
+    font-size: 28px;
+    margin-right: 3px;
+    color: #ff7300ef;
+  }
+  .logo span {
+    color: #ff7300ef;
+    font-size: 1.7rem;
+    font-weight: 600;
+  }
+
+  .search-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: auto;
+    margin-left: auto;
+
+    border-radius: 5px;
+    margin-right: 10px;
+  }
+
+  .search {
+    border: 0;
+  }
+
+  .area {
+    border: none;
+    box-shadow: none;
+    border-color: none;
+    outline: none;
+  }
+
+  footer .btn-floating:hover {
+    background-color: #ffc595;
+  }
+  footer .btn-floating i {
+    color: #2b2b2b; 
+    font-size: 24px; 
+    transition: color 0.5s ease; 
+}
+
+footer .btn-floating:hover i {
+    color: #ffffff; 
+}
+.search-container form {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.search-container input[type="text"] {
+    border: none;
+    margin-left: 5px;
+    background: none;
+    outline: none;
+    color: #000;
+    width: 100%;
+}
+
+.search-container button {
+    background: none;
+    border: none;
+    color: #000;
+    cursor: pointer;
+}
+
+.search-container button:hover {
+    color: #ff8929ef;
+}
+
+/* recipe */
+.btn {
+  transition: all 0.2s ease-in-out;
+}
+
+.btn:hover {
+  color: #ff8929ef !important;
+  transform: scale(1.1); 
+}
+.icon-name {
+  display: none;
+  margin-left: 10px;
+}
+
+.btn:hover .icon-name {
+  display: inline;
+}
+
+.recipe-title {
+    margin-top: 150px;
+    font-size: 2.4em;
+    font-weight: bold;
+}
+.recipe-subtitle {
+    margin-top: 30px;
+    font-size: 1.2em;
+}
+
+.recipe-info {
+    margin-top: 30px;
+    justify-content: center;
+    font-size: 1.3em;
+}
+.styled-image {
+    border: 1px solid #ddd; 
+    border-radius: 4px; 
+    padding: 5px;
+    width: 350px; 
+}
+.no-underline {
+    text-decoration: none !important;
+    color: #000;
+}
+.ingredients-title{
+    margin-top: 50px;
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.instructions-title {
+    margin-top: 50px;
+    font-size: 2em;
+    font-weight: bold;
+}
+.recipe-info {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+.recipe-info div {
+  flex: 1;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #fff;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.recipe-info div:not(:last-child) {
+    margin-right: 20px;
+}
+.nutrition-facts {
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  padding: 20px;
+}
+
+.nutrition-facts h3 {
+  color: #333;
+}
+
+.list-group-item {
+  background-color: transparent;
+  border: none;
+}
+
+.list-group-item span {
+  font-size: 18px;
+}
+
+.badge {
+  color: #fff;
+  background-color: #ff8929ef;
+  padding: 10px 20px;
+  border-radius: 20px;
+}
+/* notes */
+.additional-notes {
+    margin-left: 100px;
+    margin-top: 50px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+}
+.notes-title {
+    font-size: 24px;
+}
+/* ingredients */
+.ingredients-list {
+  list-style-type: none; 
+}
+/* print */
+@media print {
+  .nav,
+  footer {
+    display: none;
+  }
+
+  .recipe-title {
+    margin-top: 0px !important;
+    text-align: center;
+  }
+
+  .d-flex.justify-content-start button i {
+    display: none;
+  }
+  .d-flex.justify-content-start button .icon-name {
+    display: none;
+  }
+
+  .recipe-subtitle,
+  .d-flex.justify-content-start {
+    display: none;
+  }
+  .img-fluid {
+    display: none;
+  }
+  .nutrition-facts{
+    display: none;
+  }
+  .nutrition-title{
+    display: none;
+  }
+  
+}
+.floating-action-button {
+  position: fixed;
+  bottom: 470px;
+  right: 20px;
+  z-index: 9999;
+}
+
+.floating-action-button a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 62px;
+  height: 62px;
+  background-color: #ffffffef;
+  border-radius: 50%;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+}
+
+.floating-action-button a img {
+  width: 45px; 
+  height: 45px;
+}
+
+.floating-action-button a:hover {
+  background-color: #dddddcef;
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.3); 
+}
+
+.notification {
+  display: none;
+  width: 180px;
+  height: 50px;
+  background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  position: fixed;
+  font-size: 16px;
+  bottom: 426px;
+  right: 20px;
+  z-index: 9999;
+  padding: 10px;
+  font-size: 14px;
+  color: #000;
+}
+
+.notification-content {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  flex-direction: row;
+}
+
+</style>
+
+</head>
+<body>
+
+<!--navbar-->
+
+  <div id="mySidenav" class="sidenav">
+    <i class="closebtn fa fa-close  mt-4 pe-1" style="color: rgba(0, 0, 0, 0.895);" onclick="closeNav()"></i>
+    {% if 'user_id' in request.session %}
+    <a href="{% url 'user_logout' %}" ><i class="fas fa-sign-in-alt"></i> Logout</a>
+    {% else %}
+    <a href="{% url 'login' %}"><i class="fas fa-sign-in-alt"></i> Login</a>
+    {% endif %}
+    <a href="{% url 'profile' %}"><i class="fas fa-user"></i> Profile</a>
+    <a href="{% url 'about' %}"><i class="fas fa-info-circle"></i> About Page</a>
+    <a href="#"><i class="fas fa-envelope"></i> Contact Us</a>
+  </div>
+
+<div class="container-fluid nav  custom-navbar">
+  <div class="logo ms-4 mt-3">
+    <a href="{% url 'home_page' %}" class="logo text-decoration-none">
+        <i class="fa-solid fa-fork-knife"></i><span>Flavour Fusion</span>
+    </a>
+  </div>
+  <div class="search-container pe-3">
+    <form  method="POST">
+      {% csrf_token %}
+      <input type="text" name="search" placeholder="Search...">
+      <button type="submit" formaction="{% url 'search' %}"><i class="fa fa-search"></i></button>
+    </form>
+  </div>
+  <div>
+    <i class="fa fa-bars fa-2x pe-4" style="color: rgb(0, 0, 0);" onclick="openNav()"></i>
+  </div>
+</div>
+
+
+<!-- recipie -->
+<div style="margin-left: 125px;">
+  <div class="container-fluid d-flex justify-content-center">
+    <div class="row">
+      {% for x in recipe %}
+        <div class="col-md-6">
+            <h1 class="recipe-title">{{x.post_title}}</h1>
+            <p class="recipe-subtitle">By <a href="userprofile/{{ x.user_id.user_id }}" class="no-underline">{{ x.user_id.user_name }}</a></p>
+            <div class="d-flex justify-content-start"> 
+              <button class="btn" type="button" onclick="printpage()">
+                  <i class="fas fa-print fa-2x"></i>
+                  <span class="icon-name">Print Recipe</span>
+              </button>       
+              <a href="saved/{{x.post_id}}">
+                <button class="btn" type="button">
+                  <i class="fas fa-save fa-2x"></i>
+                  <span class="icon-name">Save Recipe</span>
+                </button>
+              </a>                                  
+              <a href="{% url 'grocery' %}">
+                  <button class="btn" type="button">
+                    <i class="fas fa-list fa-2x"></i>
+                    <span class="icon-name">Grocery List</span>
+                  </button>
+              </a>                        
+              <a href="" id="shareBtn">
+                  <button class="btn" type="button">
+                    <i class="fas fa-share fa-2x"></i>
+                    <span class="icon-name">Share Recipe</span>
+                  </button>
+              </a>                        
+            </div> 
+            <div class="tags" style="display: flex; flex-wrap: wrap;">
+              {% for tag in tags %}
+                  <span class="badge" style="margin: 5px;">{{ tag.tag_name }}</span>
+              {% endfor %}
+            </div>        
+            <div class="recipe-info">
+                <div>Difficulty level: {{x.post_difficulty_level}}</div>
+                <div>{{x.post_time_needed}}</div>
+                <div>{{x.post_calories}}</div>
+            </div>
+        </div>
+        <div class="col-md-6" style="display: flex; flex-direction: column; align-items: center; margin-top: 150px;">
+            <img src="{{x.recipe_image.url}}" class="img-fluid styled-image" alt="Shrimp And Broccoli Salad">
+        </div>            
+    </div>
+  </div>
+  {% endfor %}
+</div>
+<hr>
+
+
+<!-- ingredients -->
+<form method="POST" id="add-ingredient-form">
+  {% csrf_token %}
+  <div class="container">
+      <div class="row justify-content-start">
+          <div class="col-md-6">
+              <h2 class="ingredients-title">Ingredients</h2>
+              <ul class="ingredients-list" style="margin-top: 40px;">
+                  {% for x in ingredients %}
+                  <li>
+                      <button type="button" class="add-ingredient-btn" data-ingredient-id="{{ x.post_ingreds_id }}" data-added="false" style="border: none; background: none;">
+                          <i class="fas fa-plus-circle" style="color: #000;"></i> {{ x.post_ingredient_detail }}
+                      </button>
+                  </li>
+                  {% endfor %}
+              </ul>
+          </div>
+      </div>
+  </div>
+</form>
+
+
+<!-- nutrition -->
+<div class="container">
+  <div class="row justify-content-start">
+    <div class="col-md-6">
+      <h1 class="nutrition-title">Nutritional Information</h1>
+      <div class="nutrition-facts">
+        <h3>Amount Per Serving</h3>
+        {% for x in nutrition_facts %}
+        <ul class="list-group">
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span>{{ x.Name }}</span>
+            <span class="badge rounded-pill">{{ x.Value }}</span>
+          </li>
+        </ul>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- how to -->
+<div class="container">
+  <div class="row justify-content-lg-start">
+      <div class="col-md-6">
+          <h1 class="instructions-title">How To Make</h1>
+          <div class="d-flex justify-content-between" style="margin-top: 40px;"></div>
+            {% for step in procedure_steps %}
+              <p class="step">Step {{ step.step_order }}:  {{ step.step_text }}</p>
+            {% endfor %}
+          </div>
+      </div>
+  </div>
+</div>
+
+
+
+<!-- notes -->
+{% if additional_notes %}
+  <div class="additional-notes" style="margin: 50px auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; box-shadow: 0px 4px 6px rgba(0,0,0,0.1); max-width: 600px; width: 100%; background-color: #f8f9fa;">
+    <h2 class="notes-title" style="text-align: center; color: #ff8929ef; font-size: 2em; text-transform: uppercase; font-family: 'Courier New', Courier, monospace; font-weight: bold;">Additional Notes By the Chef</h2>
+    <p style="font-size: 1em; line-height: 1.6;">{{ additional_notes }}</p>
+  </div>
+{% endif %}
+
+
+<!-- footer -->
+<footer class="bg-secondary text-white text-center mt-5">
+  <div class="container p-4"> <div class="row">
+      <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+          <ul class="list-unstyled mb-0">
+              <li>Church Street, 682008, India</li>
+              <li><a href="mailto:flavourfusioninfo@gmail.com" style="color: #fff;text-decoration: none;">flavourfusioninfo@gmail.com</a></li>
+              <li><a href="tel:+91 7306448498" style="color: #fff;text-decoration: none;">+91 7306448498</a></li>
+          </ul>
+      </div>
+      <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+          <ul class="list-unstyled mb-0">
+              <li>
+                  <a href="https://www.instagram.com/sillah.joy" type="button" class="btn btn-floating btn-light btn-sm me-2">
+                      <i class="fab fa-instagram fa-2x"></i>
+                  </a>
+                  <a href="#" type="button" class="btn btn-floating btn-light btn-sm me-2">
+                      <i class="fab fa-facebook-f fa-2x"></i>
+                  </a>
+                  <a href="#" type="button" class="btn btn-floating btn-light btn-sm me-2">
+                      <i class="fab fa-twitter fa-2x"></i>
+                  </a>
+                  <a href="https://www.pinterest.com/sillajoy7306" type="button" class="btn btn-floating btn-light btn-sm me-2">
+                      <i class="fab fa-pinterest-p fa-2x"></i>
+                  </a> 
+              </li> 
+          </ul>
+      </div>
+      <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+          <ul class="list-unstyled mb-0">
+            <li><p class="text-white">© 2024 Copyright: <a class="text-white" href="https://flavourfusion.com/">flavourfusion.com</a></p></li>
+          </ul> 
+      </div> 
+  </div>
+</footer>
+
+<!-- Floating Action Button -->
+<div class="floating-action-button">
+  <a href="{% url 'grocery' %}" class="btn btn-floating" id="add-ingredient-btn">
+      <img src="{% static 'images/groceries.png' %}" alt="Add Ingredient">
+  </a>
+</div>
+<div class="notification" id="notification">
+  <i class="fas fa-folder fa-2x"></i><span style="font-size: 18px;"> 1 item added!</span>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+// nav
+function showDropdown(element) {
+  var dropdownContent = element.getElementsByClassName("dropdown-content")[0];
+  dropdownContent.style.display = dropdownContent.style.display === "none" ? "block" : "none";
+}
+function openNav() {
+document.getElementById("mySidenav").style.width = "250px";
+}
+
+function closeNav() {
+document.getElementById("mySidenav").style.width = "0";
+}
+// print
+function printpage() {
+window.print(); 
+}
+// share
+$(document).ready(function() {
+      $('.ingredients-list i').click(function() {
+        $(this).toggleClass('fa-plus-circle fa-minus-circle');
+      });
+    });
+const shareBtn = document.querySelector('#shareBtn');
+
+shareBtn.addEventListener('click', (event) => {
+  if(navigator.share){
+    navigator.share({
+      title: 'Flavour Fusion',
+      text: 'Check out this recipe from Flavour Fusion',
+      url: window.location.href
+    }).then(() => {
+      console.log('Successful share');
+    }).catch((error) => {
+      console.log('Failed to share');
+      console.log(error);
+    })
+  }else {
+    console.log('Share API not supported');
+  }
+})
+// grocery
+$(document).ready(function() {
+    $('.add-ingredient-btn').click(function() {
+        var ingredientId = $(this).data('ingredient-id');
+        $.ajax({
+            type: 'POST',
+            url: '{% url "add_ingredients" %}',
+            data: {
+                'ingredient_id': ingredientId,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success: function(data) {
+                // Optional: If you want to perform any action after successful addition
+                console.log('Ingredient added successfully');
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+            }
+        });
+    });
+});
+document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('click', function(event) {
+        var target = event.target;
+
+        // Check if the clicked element is an add-ingredient-btn
+        if (target.classList.contains('add-ingredient-btn')) {
+            var ingredientId = target.getAttribute('data-ingredient-id');
+            var isAdded = JSON.parse(target.getAttribute('data-added'));
+
+            // Only proceed if the item hasn't been added yet
+            if (!isAdded) {
+                // Simulate the AJAX request (replace this with your actual logic)
+                setTimeout(function() {
+                    // Show the notification
+                    var notification = document.getElementById('notification');
+                    notification.textContent = 'Item added successfully!';
+                    notification.style.display = 'block';
+
+                    // After 3 seconds, hide the notification
+                    setTimeout(function() {
+                        notification.style.display = 'none';
+                    }, 3000);
+
+                    // Mark the item as added
+                    target.setAttribute('data-added', true);
+                }, 500); // Simulated delay for demonstration purposes
+            } else {
+                // Show notification that the item is already added
+                var notification = document.getElementById('notification');
+                notification.textContent = 'Item already added!';
+                notification.style.display = 'block';
+
+                // After 3 seconds, hide the notification
+                setTimeout(function() {
+                    notification.style.display = 'none';
+                }, 3000);
+            }
+        }
+    });
+});
+</script>
+
+
+</body>
+</html>

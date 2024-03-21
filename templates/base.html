@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+{% load static %}
+
+    {% block header %}{% endblock %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <link href='https://fonts.googleapis.com/css?family=Audiowide' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    {% block title %}{% endblock %}
+<style>
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index:3;
+    top: 0;
+    right: 0;
+    background-color: #ffffff;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+  }
+
+  .sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 20px;
+    color: rgb(0, 0, 0);
+    display: block;
+    transition: 0.3s;
+  }
+
+  .sidenav a:hover {
+    color: #ff8929ef;
+  }
+
+  .sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+  }
+
+  .nav {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    background: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    z-index: 2;
+  }
+
+  .logo {
+    color: #ff8929ef;
+    display: flex;
+    align-items: center;
+  }
+  .logo i {
+    font-size: 28px;
+    margin-right: 3px;
+    color: #ff7300ef;
+  }
+  .logo span {
+    color: #ff7300ef;
+    font-size: 1.7rem;
+    font-weight: 600;
+  }
+
+  .search-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: auto;
+    margin-left: auto;
+
+    border-radius: 5px;
+    margin-right: 10px;
+  }
+
+  .search {
+    border: 0;
+  }
+
+  .area {
+    border: none;
+    box-shadow: none;
+    border-color: none;
+    outline: none;
+  }
+
+  footer .btn-floating:hover {
+    background-color: #ffc595;
+  }
+  footer .btn-floating i {
+    color: #2b2b2b; 
+    font-size: 24px; 
+    transition: color 0.5s ease; 
+}
+
+footer .btn-floating:hover i {
+    color: #ffffff; 
+}
+.search-container form {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.search-container input[type="text"] {
+    border: none;
+    margin-left: 5px;
+    background: none;
+    outline: none;
+    color: #000;
+    width: 100%;
+}
+
+.search-container button {
+    background: none;
+    border: none;
+    color: #000;
+    cursor: pointer;
+}
+
+.search-container button:hover {
+    color: #ff8929ef;
+}
+
+
+</style>
+</head>
+<body>
+
+<!--navbar-->
+
+  <div id="mySidenav" class="sidenav">
+    <i class="closebtn fa fa-close  mt-4 pe-1" style="color: rgba(0, 0, 0, 0.895);" onclick="closeNav()"></i>
+    {% if 'user_id' in request.session %}
+    <a href="{% url 'user_logout' %}" ><i class="fas fa-sign-in-alt"></i> Logout</a>
+    {% else %}
+    <a href="{% url 'login' %}"><i class="fas fa-sign-in-alt"></i> Login</a>
+    {% endif %}
+    <a href="{% url 'profile' %}"><i class="fas fa-user"></i> Profile</a>
+    <a href="{% url 'grocery' %}"><i class="fas fa-list-check"></i> Grocery List</a>
+    <a href="{% url 'about' %}"><i class="fas fa-info-circle"></i> About Page</a>
+    <a href="#"><i class="fas fa-envelope"></i> Contact Us</a>
+  </div>
+
+<div class="container-fluid nav  custom-navbar">
+  <div class="logo ms-4 mt-3">
+    <a href="{% url 'home_page' %}" class="logo text-decoration-none">
+        <i class="fa-solid fa-fork-knife"></i><span>Flavour Fusion</span>
+    </a>
+  </div>
+  <div class="search-container pe-3">
+    <form  method="POST">
+      {% csrf_token %}
+      <input type="text" name="search" placeholder="Search...">
+      <button type="submit" formaction="{% url 'search' %}"><i class="fa fa-search"></i></button>
+    </form>
+  </div>
+  <div>
+    <i class="fa fa-bars fa-2x pe-4" style="color: rgb(0, 0, 0);" onclick="openNav()"></i>
+  </div>
+</div>
+
+<!--end of navbar-->
+
+{% block content %} {% endblock %}
+
+<!-- footer -->
+<footer class="bg-secondary text-white text-center mt-5">
+    <div class="container p-4"> <div class="row">
+        <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+            <ul class="list-unstyled mb-0">
+                <li>Church Street, 682008, India</li>
+                <li><a href="mailto:flavourfusioninfo@gmail.com" style="color: #fff;text-decoration: none;">flavourfusioninfo@gmail.com</a></li>
+                <li><a href="tel:+91 7306448498" style="color: #fff;text-decoration: none;">+91 7306448498</a></li>
+            </ul>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+            <ul class="list-unstyled mb-0">
+                <li>
+                    <a href="https://www.instagram.com/sillah.joy" type="button" class="btn btn-floating btn-light btn-sm me-2">
+                        <i class="fab fa-instagram fa-2x"></i>
+                    </a>
+                    <a href="#" type="button" class="btn btn-floating btn-light btn-sm me-2">
+                        <i class="fab fa-facebook-f fa-2x"></i>
+                    </a>
+                    <a href="#" type="button" class="btn btn-floating btn-light btn-sm me-2">
+                        <i class="fab fa-twitter fa-2x"></i>
+                    </a>
+                    <a href="https://www.pinterest.com/sillajoy7306" type="button" class="btn btn-floating btn-light btn-sm me-2">
+                        <i class="fab fa-pinterest-p fa-2x"></i>
+                    </a> 
+                </li> 
+            </ul>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+            <ul class="list-unstyled mb-0">
+              <li><p class="text-white">© 2024 Copyright: <a class="text-white" href="https://flavourfusion.com/">flavourfusion.com</a></p></li>
+            </ul> 
+        </div> 
+    </div>
+</footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+function showDropdown(element) {
+    var dropdownContent = element.getElementsByClassName("dropdown-content")[0];
+    dropdownContent.style.display = dropdownContent.style.display === "none" ? "block" : "none";
+}
+function openNav() {
+  document.getElementById("mySidenav").style.width = "250px";
+}
+
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+}
+function printpage() {
+  window.print();
+    
+}
+
+</script>
+
+
+</body>
+</html>

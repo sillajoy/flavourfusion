@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header %}
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/bs-brain@2.0.3/components/abouts/about-5/assets/css/about-5.css">
+  <title>Flavour Fusion</title>
+  <!-- icons -->
+  <link href="https://pro.fontawesome.com/releases/v6.0.0-beta3/css/all.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet"/>
+  <!-- font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&display=swap" rel="stylesheet">
+  <!-- Add Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block title %} <title>Flavour Fusion About Page</title> {% endblock %}
+
+{% block content %} 
+
+ <!-- about -->
+ <div class="bg">
+  <div class="container py-5">
+    <div class="row h-100 align-items-center py-5">
+      <div class="col-lg-6">
+        <h1 class="display-4">About Us</h1>
+        <p class="lead text-muted mb-5"><span style="font-size: 25px;"><strong>Flavour Fusion</strong></span> is a culinary haven for food enthusiasts. It's a unique platform where traditional recipes meet modern cooking techniques, creating a fusion of flavors that tantalize your taste buds. From appetizers to desserts, Flavour Fusion offers a diverse collection of recipes from around the world, each with a detailed guide and tips to ensure your cooking experience is seamless. Whether you're a novice cook or a seasoned chef, Flavour Fusion is your go-to destination for exploring and mastering the art of cooking.</p>
+      </div>
+      <div class="col-lg-6 d-none d-lg-block"><img src="{% static 'images/about 1.png' %}" alt="" class="img-fluid"></div>
+    </div>
+  </div>
+</div>
+
+<div class="bg-white py-5">
+  <div class="container py-5">
+    <div class="row align-items-center mb-5">
+      <div class="col-lg-6 order-2 order-lg-1"><i class="fa fa-shopping-cart fa-2x mb-3"></i>
+        <h2 class="font-weight-light">Grocery List</h2>
+        <p class="font-italic text-muted mb-4">Flavour Fusion's Grocery List feature allows users to add ingredients directly from recipes to a personalized list. As you browse through a recipe on Flavour Fusion, each ingredient is accompanied by an ‘Add to Grocery List’ button. Clicking this button will automatically add the ingredient, along with its required quantity, to your personalized Grocery List. This means you can build your shopping list as you explore different recipes, without having to leave the page or manually write down each ingredient.</p>
+      </div>
+      <div class="col-lg-5 px-5 mx-auto order-1 order-lg-2"><img src="{% static 'images/about 2.png' %}" alt="" class="img-fluid mb-4 mb-lg-0"></div>
+    </div>
+    <div class="row align-items-center">
+      <div class="col-lg-5 px-5 mx-auto"><img src="{% static 'images/about 3.png' %}" alt="" class="img-fluid mb-4 mb-lg-0"></div>
+      <div class="col-lg-6"><i class="fa fa-pot-food fa-2x mb-3"></i>
+        <h2 class="font-weight-light">Explore Global Cuisines</h2>
+        <p class="font-italic text-muted mb-4">Flavour Fusion is your passport to the world of culinary delights. Our website features a vast array of recipes from various global cuisines, allowing you to embark on a gastronomic journey right from your kitchen. Users can explore and cook traditional dishes from Japanese, Chinese, Thai, and many other cuisines, with detailed recipes and cooking tips provided for each dish.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<section class="py-3 py-md-5 py-xl-8">
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-md-10 col-lg-8">
+      <h6 class="display-5 mb-4">Our voyage commenced with the ambition to alter the world's outlook on recipe sharing.</h6>
+    </div>
+  </div>
+</div>
+
+<div class="container overflow-hidden">
+  <div class="row gy-4 gy-lg-0">
+    <div class="col-12 col-lg-6">
+      <article>
+        <div class="card border-0">
+          <div class="card-body border bg-white p-4">
+            <div class="entry-header mb-3">
+              <h2 class="card-title entry-title h4 mb-0">
+                <a class="link-dark text-decoration-none" href="#!">Our Mission</a>
+              </h2>
+            </div>
+            <p class="card-text entry-summary text-secondary mb-3">“Our mission is to create a community where food enthusiasts can share, discover & celebrate diverse traditions. We aim to empower home cooks & professional chefs alike by providing a platform where they can exchange recipes, learn new cooking techniques & explore the rich tapestry of global cuisines. By doing so, we hope to inspire creativity in the kitchen, promote cultural understanding, and contribute to a world where the joy of cooking and eating is shared by all. In our pursuit of this mission,we hope that every cuisine can be appreciated & savored. We believe that every recipe has a story to tell & through Flavour Fusion, we hope to share these stories, bringing people closer one dish at a time.”</p>
+          </div>
+        </div>
+      </article>
+    </div>
+    <div class="col-12 col-lg-6">
+      <article>
+        <div class="card border-0">
+          <div class="card-body border bg-white p-4">
+            <div class="entry-header mb-3">
+              <h2 class="card-title entry-title h4 mb-0">
+                <a class="link-dark text-decoration-none" href="#!">Our Approach</a>
+              </h2>
+            </div>
+            <p class="card-text entry-summary text-secondary mb-3">“Our approach at Flavour Fusion is centered around fostering a vibrant and inclusive community for food lovers. We believe in the power of shared knowledge and aim to facilitate the exchange of culinary wisdom across borders. Our platform is designed to be user-friendly and accessible, enabling users to easily share their recipes and learn from others. We prioritize quality and authenticity in the recipes we host, and encourage our users to do the same. We also understand the importance of adapting to our users’ evolving needs and continuously strive to improve and expand our features based on their feedback. Through this approach, we hope to make cooking an enjoyable and enriching experience for everyone.”</p>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- feedback -->
+<div class="container">
+<div class="row align-items-center">
+  <div class="col-lg-5 px-5 mx-auto"><img src="{% static 'images/about 4.png' %}" alt="" class="img-fluid mb-4 mb-lg-0"></div>
+  <div class="col-lg-6">
+    <i class="fa fa-message-dots fa-2x mb-3"></i>
+    <h2 class="font-weight-light">Feedback</h2>
+    <p class="font-italic text-muted mb-4">Your Thoughts Matter: Share Your Experience with Us.</p>
+    <a href="Flavour Fusion feedback.html" id="feedbackButton" class="btn px-5 rounded-pill shadow-sm" style="background: #ff943cef;;">Give Feedback</a>    
+  </div>
+</div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,172 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Details</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .card {
+            border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #fff; /* Background color added */
+        }
+
+        .card img {
+            width: 100%;
+            height: auto;
+        }
+
+        .card-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .card-text {
+            font-size: 16px;
+            color: #555;
+        }
+
+        .btn {
+            background-color: #ff8929;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #ff6b00;
+        }
+        .form-group label {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .update-form {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .update-form h2 {
+            font-size: 28px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .update-form input[type="text"],
+        .update-form input[type="email"],
+        .update-form textarea,
+        .update-form button[type="submit"] {
+            border-radius: 5px;
+        }
+
+        .update-form button[type="submit"] {
+            background-color: #ff8929;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .update-form button[type="submit"]:hover {
+            background-color: #ff6b00;
+        }
+    </style>
+</head>
+<body>
+    <!-- User Details -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 offset-md-1"> 
+                {% if user.user_image %}
+                <img src="{{user.user_image.url}}" class="img-fluid rounded-circle" style="height: 170px; width: 170px;margin-left: 150px;margin-top: 60px;">
+                {% else %}
+                <img src="{% static 'images/default_user_profile.jpg' %}" class="img-fluid rounded-circle" style="height: 170px; width: 170px;margin-left: 150px;margin-top: 60px;">
+                {% endif %}
+            </div>
+            <div class="col-md-4 mt-5">
+                <div class="card" style="margin-left: -50px;"> 
+                    <div class="card-body">
+                        <h2 class="card-title">{{ user.user_name }}</h2>
+                        {% if user.user_bio %}
+                            <p class="card-text">{{ user.user_bio }}</p>
+                        {% endif %}
+                        {% if user.user_email %}
+                        <p class="card-text"><strong>Email:</strong> {{ user.user_email }}</p>
+                        {% endif %}
+                        <!-- <div>
+                            <a href="#" class="btn mr-2"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="btn mr-2"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="btn mr-2"><i class="fab fa-pinterest-p"></i></a>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <!-- User Update Form -->
+    <div class="container mt-4 mb-5">
+        <div class="row">
+            <div class="col-md-6 offset-md-3 update-form">
+                <h2 class="text-center mb-4">Update Your Details</h2>
+                <form method="POST" enctype="multipart/form-data" action="{% url 'update_profile' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" class="form-control" name="username" value="{{ user.user_name }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="userbio">Bio</label>
+                        <textarea class="form-control" name="userbio" rows="3" placeholder="{% if user.user_bio %}{{ user.user_bio }}{% else %}Add bio to your profile{% endif %}"></textarea>
+                    </div>     
+                    <div class="form-group">
+                        <label for="userpassword">Password</label>
+                        <input type="text" class="form-control" name="userpassword" value="{{ user.user_password }}">
+                    </div>    
+                    <div class="form-group">
+                        <label for="userphone">Phone Number</label>
+                        <input type="text" class="form-control" name="userphone" value="{{ user.user_phone }}">
+                    </div>           
+                    <div class="form-group">
+                        <label for="useremail">Email address</label>
+                        <input type="email" class="form-control" name="useremail" value="{% if user.user_email %}{{ user.user_email }}{% else %}Add email address to your profile{% endif %}">
+                    </div>
+                    <div class="form-group">
+                        <label for="userimage">Profile Image</label>
+                        <input type="file" class="form-control-file" id="userimage" name="userimage">
+                    </div>
+                    <button type="submit" class="btn btn-block">Update</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

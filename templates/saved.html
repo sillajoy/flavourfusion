@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saved Recipes</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, #ffffff, #f8f9fa);
+      padding-top: 50px;
+    }
+    .container {
+      max-width: 800px;
+    }
+    .card {
+      border: none;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      transition: box-shadow 0.3s ease-in-out;
+    }
+    .card:hover {
+      box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+      transform: translateY(-5px); 
+    }
+    .card-img-top {
+      height: 200px;
+      object-fit: cover;
+    }
+    .card-body {
+      padding: 20px;
+    }
+    .card-title {
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+      color: #333;
+    }
+    .card-text {
+      color: #6c757d;
+      font-size: 1rem;
+      cursor: pointer; 
+    }
+    .card-text:hover {
+      color: #fa7000; 
+      text-decoration: none; 
+    }
+    .card-link:hover .card-title, .card-link:hover .card-text {
+      color: #ff8929;
+      text-decoration: none;
+    }
+    .page-title {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .empty-message {
+      text-align: center;
+      color: #888;
+    }
+    .empty-icon {
+      font-size: 4rem;
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container mt-5">
+  <h2 class="page-title">Saved Recipes</h2>
+  <div class="row">
+    {% for x in saved_recipes %}
+    <div class="col-md-4">
+      <div class="card">
+        <img src="{{ x.recipe.recipe_image.url }}" class="card-img-top" alt="Recipe Image">
+        <div class="card-body">
+          <a href="title/{{x.recipe.post_id}}" class="card-link">
+            <h5 class="card-title">{{ x.recipe.post_title }}</h5>
+          </a>
+          <p class="card-text">
+            <a href="user/{{ x.recipe.user_id.id }}" style="text-decoration: none;">{{ x.recipe.user_id.user_name }}</a><br>
+            <a href="{% url 'delete_saved_recipe' x.id %}" class="card-link text-danger" style="text-decoration: none;">
+              <i class="fas fa-trash-alt"></i> Delete
+            </a>
+          </p>          
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    {% if saved_recipes|length == 0 %}
+    <div class="col-md-12">
+      <h3 class="empty-message"><i class="fas fa-exclamation-circle empty-icon"></i> No saved recipes found.</h3>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

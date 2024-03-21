@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <!-- icons -->
+    <link href="https://pro.fontawesome.com/releases/v6.0.0-beta3/css/all.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css"/>
+    <link href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css" rel="stylesheet"/>
+    <!-- font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&display=swap" rel="stylesheet"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap" rel="stylesheet"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&display=swap" rel="stylesheet"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Italianno&display=swap" rel="stylesheet"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Italianno&display=swap" rel="stylesheet"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Caprasimo&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Salsa&display=swap" rel="stylesheet"/>
+    <!-- Add Bootstrap CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
+    <!-- css -->
+    <link rel="stylesheet" href="{% static '/css/styles.css' %}"/>
+{% endblock %}
+
+{% block title %} <title>Flavour Fusion Home Page</title> {% endblock %}
+
+{% block content %} 
+
+    <div class="container text-center content-wrapper">
+        <h1 class="display-4">SIMPLE RECIPES MADE FOR</h1>
+        <h2 class="lead mb-5">real, actual, everyday life.</h2>
+    </div>
+
+  <!-- Carousel -->
+  <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      {% if active_event %}
+        <div class="carousel-item active">
+          <a href="{% url 'christmas_page' %}">
+            <div class="img-wrapper" style="background-image: url('{{ active_event.event_img.url }}');"></div>
+          </a>
+        </div>
+      {% endif %}
+      {% for ad in ads %}
+        <div class="carousel-item">
+          <a href="{{ ad.ads_link }}">
+            <div class="img-wrapper" style="background-image: url('{{ ad.ads_image.url }}');"></div>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+  
+
+  <!-- Recommended Recipes Section -->
+  {% if recommended_recipes %}
+  <div class="container mt-5">
+    <h2 class="text-center">Recommended For You</h2>
+    <div id="recommendedRecipesCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <div class="row">
+            <!-- Loop through recommended recipes based on the most viewed recipe's subcategory and tags -->
+            {% for recommended_recipe in recommended_recipes %}
+              <div class="col-md-4">
+                <div class="card">
+                  <img src="{{ recommended_recipe.recipe_image.url }}" class="card-img-top" alt="{{ recommended_recipe.post_title }}" />
+                  <div class="card-body">
+                    <a href="{% url 'view_recipe' recipe_id=recommended_recipe.post_id %}" class="card-link">
+                        <h5 class="card-title">{{ recommended_recipe.post_title }}</h5>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+
+
+  
+
+  <!-- dropdown -->
+  <div class="container mt-5">
+    <h2 class="text-center mb-5">Some Of Our Recipes</h2>
+    <div class="row justify-content-center">
+        {% for main_category in main_categories %}
+            <div class="col-md-2 text-center">
+                <div class="custom-button custom-button-global justify-content-center" onclick="showDropdown(this)">
+                    {{ main_category.main_category_name }}
+                    <div class="dropdown-content">
+                        {% for sub_category in main_category.subcategorymodel_set.all %}
+                            <a href="{% url 'home_page_with_subcategory' sub_category_id=sub_category.sub_category_id %}">{{ sub_category.sub_category_name }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+  
+
+  <!-- cards -->
+  <div class="container mt-5">
+    <div class="row">
+        {% if recipes %}
+            {% for recipe in recipes %}
+                <div class="col-md-4 mb-3">
+                    <div class="card">
+                        <div class="image-container">
+                            <img src="{{ recipe.recipe_image.url }}" class="card-img-top"  style="width: 100%; height: 350px;" alt="{{ recipe.post_title }}" />
+                            <div class="overlay">
+                              <a href="{% url 'view_recipe' recipe_id=recipe.post_id %}" class="text"><h5 class="no-underline">View Recipe</h5></a>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                          <a href="{% url 'view_recipe' recipe_id=recipe.post_id %}" class="text"><h5 class="no-underline" style="text-align: left;">{{ recipe.post_title }}</h5></a>
+                          <a href="#"><p class="no-underline" style="color: #000000; font-style: italic">{{ recipe.user_id.user_name }}</p></a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-md-12 text-center">
+                <p>No recipes found under "{{ selected_subcategory_name }}"</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

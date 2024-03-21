@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap" rel="stylesheet"/>
+    <title>Update Recipe</title>
+    <style>
+        body {
+            font-family: 'DM Serif Display', serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 25px auto;
+            text-align: center;
+        }
+
+        .recipe-section {
+            background-color: white;
+            padding: 20px;
+            width: 50%;
+            margin: auto;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .recipe-section h1 {
+            font-size: 2em;
+            color: #333;
+        }
+
+        .recipe-section p {
+            color: #777;
+        }
+
+        .add-button {
+            background-color: #ff8929ef;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5em;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .recipe-form, .nutrition-form, .ingredients-form, .procedure-form, .images-form, .tags-input {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-control {
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 1em;
+        }
+
+        .btn {
+            background-color: #ff8929ef;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #ff8929;
+            color: white;
+        }
+
+        .centered {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Update Recipe</h1>
+</div>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="recipe-section">
+        <button class="add-button" onclick="toggleForm('recipeForm', this)">+</button>
+        <h1>Recipe Details</h1>
+        <p>Update basic recipe details like title, image, calorie, time_needed, etc...</p>
+        <div class="recipe-form" id="recipeForm">
+            <div class="form-group">
+                <label for="title">Recipe Title:</label>
+                <input type="text" class="form-control" name="title" placeholder="Enter recipe title (e.g., Spaghetti Carbonara)" value="{{ recipe.post_title }}" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Recipe Description:</label>
+                <textarea class="form-control" name="description" rows="3" placeholder="Enter recipe description" required>{{ recipe.post_description }}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="notes">Additional Notes by Chef:</label>
+                <textarea class="form-control" name="notes" rows="3" placeholder="Enter additional notes by chef">{{ recipe.post_additional_notes_by_chef }}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="calorie">Recipe Calorie:</label>
+                <input type="text" class="form-control" name="calorie" placeholder="Enter calorie of the Recipe (e.g., 100 Calorie)" value="{{recipe.post_calories}}" required>
+            </div>
+            <div class="form-group">
+                <label for="time_needed">Time Needed to Cook:</label>
+                <input type="text" class="form-control" name="time" placeholder="Enter time needed to cook the recipe (e.g., 2 hrs 30 mins)" value="{{recipe.post_time_needed}}" required>
+            </div>
+            <div class="form-group">
+                <label for="difficulty">Difficulty Level:</label>
+                <select class="form-control" name="difficulty" required>
+                    <option value="">{{recipe.post_difficulty_level}}</option>
+                    <option value="easy">Easy</option>
+                    <option value="moderate">Moderate</option>
+                    <option value="hard">Hard</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="subcategory">Subcategory:</label>
+                <select class="form-control" name="subcategory" required>
+                    <option value="">{{recipe.sub_category_id}}</option>
+                    {% for subcategory in subcategories %}
+                        <option value="{{ subcategory.sub_category_id }}">{{ subcategory.sub_category_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>   
+            <div class="form-group">
+                <label for="event">Recipe Event:</label>
+                <select class="form-control" name="event">
+                    <option value="">{{recipe.event_id}}</option>
+                    {% for event in events %}
+                        <option value="{{ event.event_id }}">{{ event.event_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>                                     
+            <div class="form-group">
+                <label for="image_url">Recipe Image:</label>
+                <input type="file" class="form-control-file" name="image_url" value="{{recipe.recipe_image}}">
+            </div>
+        </div>
+    </div>
+    <div class="recipe-section">
+        <button class="add-button" onclick="toggleForm('nutritionForm', this)">+</button>
+        <h1>Nutritional Facts</h1>
+        <p>Update the nutritional facts of the recipe.</p>
+        <div class="nutrition-form" id="nutritionForm">
+            <div class="form-group">
+                {% for x in nutrient_facts %}
+                <label for="{{ x.Name }}">{{ x.Name }}</label>
+                <input type="text" class="form-control" name="{{ x.Name }}" value="{{ x.Value }}">
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="recipe-section">
+        <button class="add-button" onclick="toggleForm('ingredientsForm', this)">+</button>
+        <h1>Recipe Ingredients</h1>
+        <p>Update Ingredients List</p>
+        <div class="ingredients-form" id="ingredientsForm">
+            <div id="ingredientSteps">
+                {% for ingredient in postingredients %}
+                <div class="form-group">
+                    <input type="text" class="form-control" name="ingredients" placeholder="Enter ingredient" value="{{ ingredient.post_ingredient_detail }}">
+                </div>
+                {% endfor %}
+            </div>                
+            <div class="text-center">
+                <button type="button" class="btn" onclick="addIngredientStep()">Add Ingredient Step</button>
+            </div>
+        </div>
+    </div>    
+    <div class="recipe-section">
+        <button class="add-button" onclick="toggleForm('procedureForm', this)">+</button>
+        <h1>Cooking Procedure</h1>
+        <p>Update the cooking procedure </p>
+        <div class="procedure-form" id="procedureForm">
+            <div id="cookingSteps">
+                {% for x in cooking_procedure %}
+                <div class="form-group">
+                    <label for="cookingStep">{{x.step_order}}</label>
+                    <textarea class="form-control" name="cooking_step1" rows="3" placeholder="Enter cooking step 1">{{x.step_text}}</textarea>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="text-center mt-4">
+                <div class="d-inline-block">
+                    <button type="button" class="btn" onclick="addCookingStep()">Add Cooking Step</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="recipe-section">
+        <button class="add-button" onclick="toggleForm('imagesForm', this)">+</button>
+        <h1>Change Images</h1>
+        <p>Make changes in images for the recipe: one for the main dish, one for the preparation process, and one showcasing the final result.</p>
+        <div class="images-form" id="imagesForm">
+            {% for image in images %}
+            <div class="form-group">
+                <label for="main_dish_image">Main Dish Image:</label>
+                <img src="{{ image.main_dish_image.url }}" alt="Main Dish Image" style="width: 100px; height: auto;">
+                <input type="file" class="form-control-file" name="main_dish_image" >
+            </div>
+            <div class="form-group">
+                <label for="preparation_image">Preparation Image:</label>
+                <img src="{{ image.preparation_image.url }}" alt="Preparation Image" style="width: 100px; height: auto;">
+                <input type="file" class="form-control-file" name="preparation_image" >
+            </div>
+            <div class="form-group">
+                <label for="final_result_image">Final Result Image:</label>
+                <img src="{{ image.final_result_image.url }}" alt="Final Result Image" style="width: 100px; height: auto;">
+                <input type="file" class="form-control-file" name="final_result_image" >
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="recipe-section">
+        <button type="button" class="add-button" onclick="toggleForm('tagsForm', this)">+</button>
+        <h1>Tags</h1>
+        <p>Add or Update tags for the recipe (up to 8).</p>
+        <div class="tags-input" id="tagsForm"> 
+            <ul id="tags">
+                {% for tag in tags %}
+                <li contenteditable="true" onclick="makeTagEditable(this)">{{ tag.tag_name }}</li>
+                {% endfor %}
+            </ul>
+            <input type="hidden" id="tags-data" name="tags_data">
+            <input type="text" id="input-tag" name="tag" placeholder="Add a tag">
+        </div>         
+    </div>         
+       
+
+    <div class="centered">
+        <button type="submit" class="btn btn-primary">Save changes</button>
+    </div>
+</form>
+
+<script>
+let inputCount = 1; // Initialize input count
+
+function addIngredientStep() {
+    const ingredientStepsDiv = document.getElementById('ingredientSteps');
+    const newIngredientStep = document.createElement('div');
+    newIngredientStep.classList.add('form-group');
+    const newInput = document.createElement('input');
+    newInput.type = 'text';
+    newInput.classList.add('form-control');
+    newInput.name = `ingredient${inputCount}`; // Dynamically set the name attribute
+    newInput.placeholder = `Enter ingredient`;
+    newIngredientStep.appendChild(newInput);
+    ingredientStepsDiv.appendChild(newIngredientStep);
+    inputCount++; // Increment input count
+}
+function addCookingStep() {
+    var cookingStepsDiv = document.getElementById('cookingSteps');
+    var stepCounter = cookingStepsDiv.querySelectorAll('.form-group').length + 1; // Get the current number of steps
+    var newCookingStep = document.createElement('div');
+    newCookingStep.classList.add('form-group');
+    var newTextarea = document.createElement('textarea');
+    newTextarea.classList.add('form-control');
+    newTextarea.name = 'cooking_step' + stepCounter; 
+    newTextarea.id = 'cooking_step' + stepCounter; 
+    newTextarea.rows = '3';
+    newTextarea.placeholder = 'Enter cooking step ' + stepCounter;
+    newCookingStep.appendChild(newTextarea);
+    cookingStepsDiv.appendChild(newCookingStep);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const inputTag = document.getElementById('input-tag');
+    const tagsList = document.getElementById('tags');
+    const tagsDataInput = document.getElementById('tags-data');
+
+    inputTag.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            const tagValue = inputTag.value.trim();
+            if (tagValue !== '' && tagsList.children.length < 8) {
+                const tagItem = document.createElement('li');
+                tagItem.contentEditable = true;
+                tagItem.innerText = tagValue;
+                tagItem.addEventListener('blur', updateTagsData);
+                tagsList.appendChild(tagItem);
+                inputTag.value = '';
+
+                updateTagsData();
+            } else if (tagsList.children.length >= 8) {
+                alert('You can only add up to 8 tags.');
+            }
+        }
+    });
+
+    document.querySelector('form').addEventListener('submit', function(event) {
+        updateTagsData();
+    });
+
+    function updateTagsData() {
+        const tagsData = Array.from(tagsList.children).map(tag => tag.innerText.trim()).join(',');
+        tagsDataInput.value = tagsData;
+    }
+
+    function makeTagEditable(tag) {
+        tag.contentEditable = true;
+        tag.addEventListener('blur', updateTagsData);
+    }
+});
+
+function toggleForm(formId, button) {
+    var form = document.getElementById(formId);
+    if (form.style.display === 'none') {
+        form.style.display = 'block';
+        if (formId !== 'tagsForm') { 
+            button.innerHTML = '-';
+        }
+    } else {
+        form.style.display = 'none';
+        if (formId !== 'tagsForm') { 
+            button.innerHTML = '+';
+        }
+    }
+}
+
+</script>
+
+</body>
+</html>
