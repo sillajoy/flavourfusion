@@ -120,7 +120,7 @@ def christmas(request):
 def view(request, recipe_id):
     recipe = get_object_or_404(RecipePostModel, pk=recipe_id)
     images = RecipeImagesModel.objects.filter(recipe=recipe_id)
-    comments = RecipePostCommentModel.objects.filter(post_id=recipe)
+    
 
     user = None
     storage_type = None
@@ -141,7 +141,7 @@ def view(request, recipe_id):
         viewed_post_subcategory_list = request.COOKIES.get('viewed_post_subcategory_list', '[]')
         viewed_post_subcategory_list = json.loads(viewed_post_subcategory_list)
         viewed_post_subcategory_list.append(recipe.sub_category_id.sub_category_id)
-        response = render(request, 'recipe_details1.html', {'recipes': recipe, 'images': images, 'comments': comments})
+        response = render(request, 'recipe_details1.html', {'recipes': recipe, 'images': images})
         response.set_cookie('viewed_post_subcategory_list', json.dumps(viewed_post_subcategory_list))
         storage_type = "cookie"
 
@@ -150,7 +150,7 @@ def view(request, recipe_id):
     if storage_type == "cookie":
         return response
     else:
-        return render(request, 'recipe_details1.html', {'recipes': recipe, 'images': images, 'comments': comments})
+        return render(request, 'recipe_details1.html', {'recipes': recipe, 'images': images})
 
 def about(request):
     """
@@ -162,28 +162,45 @@ def about(request):
     return render(request, 'about.html')
 
 def view2(request):
-    """
-    Display detailed information about a recipe.
-
-    If the request method is POST, retrieve the recipe details,
-    including procedure steps, additional notes, nutrition facts,
-    and ingredients count, and render the 'recipe_details2.html'
-    template with this information. If the request method is not
-    POST, redirect to the homepage ('/').
-
-    """
     if request.method == 'POST':
-        post_id = request.POST.get('id')
-        recipe = RecipePostModel.objects.get(pk=post_id)
+        post_id = request.POST.get('id') 
+        print("Post ID:", post_id)  
+        recipe = get_object_or_404(RecipePostModel, pk=post_id)
         procedure_steps = ProcedureStep.objects.filter(recipe=recipe).order_by('step_order')
         additional_notes = recipe.post_additional_notes_by_chef
         nutrition_facts = NutritionFact.objects.filter(post=recipe)
         ingredients = PostIngredientsModel.objects.filter(post=recipe)
         tags = TagsModel.objects.filter(post_id=recipe)
+        comments = RecipePostCommentModel.objects.filter(post_id=recipe)
 
-        return render(request, 'recipe_details2.html', {'recipe': [recipe], 'procedure_steps': procedure_steps, 'additional_notes': additional_notes, 'nutrition_facts': nutrition_facts, 'ingredients': ingredients, 'tags': tags})
+        new_comment_text = request.POST.get('comment')
+        postid = request.POST.get('id')
+        print("Hidden ID:", postid)
+        if new_comment_text:
+            if 'user_id' in request.session:
+                user_id = request.session['user_id']
+                user = UserModel.objects.filter(user_id=user_id).first()
+                if user:
+                    comment = RecipePostCommentModel()
+                    post_instance = get_object_or_404(RecipePostModel, pk=postid)
+                    comment.post_id = post_instance
+                    comment.comment = new_comment_text
+                    comment.user_id = user
+                    comment.save()
+
+        return render(request, 'recipe_details2.html', {
+            'recipe': [recipe],
+            'procedure_steps': procedure_steps,
+            'additional_notes': additional_notes,
+            'nutrition_facts': nutrition_facts,
+            'ingredients': ingredients,
+            'tags': tags,
+            'comments': comments,
+            'post_id': post_id,  
+        })
     else:
         return redirect('/')
+
 
 
 def login(request):
@@ -463,71 +480,14 @@ def recipe_update_details(request, id):
             recipe.recipe_image = request.FILES['image_url']
         recipe.save()
 
-        # update nutritional facts
+        # nutritional facts update
         for fact in NutritionFact.objects.filter(post=recipe):
-            fact.Value = request.POST.get(fact.Name, '')
-            fact.save()
+            updated_value = request.POST.get(fact.Name)
+            if updated_value is not None:
+                fact.Value = updated_value
+                fact.save()
 
-        # update ingredients
-        ingredients = request.POST.getlist('ingredients')  # Get list of ingredients from form
-        for i, ingredient_detail in enumerate(ingredients, start=1):
-            # If ingredient exists, update it; otherwise, create a new one
-            if i <= recipe.postingredients.count():
-                ingredient_instance = recipe.postingredients.all()[i - 1]
-                ingredient_instance.post_ingredient_detail = ingredient_detail
-                ingredient_instance.save()
-            else:
-                new_ingredient = PostIngredientsModel(post_ingredient_detail=ingredient_detail, post=recipe)
-                new_ingredient.save()
 
-        # update cooking procedure
-        existing_steps = ProcedureStep.objects.filter(recipe=recipe)
-        for i, step in enumerate(existing_steps):
-            step_text = request.POST.get(f'cooking_step{i+1}')
-            if step_text is not None:  # if this step is included in the POST data
-                step.step_text = step_text
-                step.save()
-
-        # check for new steps
-        i = len(existing_steps) + 1
-        while True:
-            step_text = request.POST.get(f'cooking_step{i+1}')
-            if not step_text:  # if there is no text for this step, we're done
-                break
-            # if there is text for this step, create it
-            ProcedureStep.objects.create(step_order=i, step_text=step_text, recipe=recipe)
-            i += 1
-
-        # update images
-        images_instance = RecipeImagesModel.objects.filter(recipe=recipe).first()
-        if images_instance is not None:
-            if 'main_dish_image' in request.FILES:
-                images_instance.main_dish_image = request.FILES['main_dish_image']
-            if 'preparation_image' in request.FILES:
-                images_instance.preparation_image = request.FILES['preparation_image']
-            if 'final_result_image' in request.FILES:
-                images_instance.final_result_image = request.FILES['final_result_image']
-            images_instance.save()
-
-        # update tags
-        tags_data = request.POST.get('tags_data')  # Assuming 'tags_data' is the name of the input field containing tag data
-        if tags_data:
-            # Split the tags data into a list of tag names
-            tag_names = [tag.strip() for tag in tags_data.split(',')]
-            
-            # Get existing tags for the recipe
-            existing_tags = TagsModel.objects.filter(post_id=recipe)
-            existing_tag_names = [tag.tag_name for tag in existing_tags]
-            
-            # Update existing tags or create new ones
-            for tag_name in tag_names:
-                if tag_name in existing_tag_names:
-                    # Tag already exists, no need to create a new one
-                    continue
-                else:
-                    # Create a new tag
-                    new_tag = TagsModel(tag_name=tag_name, post_id=recipe)
-                    new_tag.save()
         return redirect('/profile')
 
 

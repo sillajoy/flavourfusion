@@ -88,7 +88,7 @@ class RecipePostModel(models.Model):
     def __str__(self):
         return f'{self.post_title}'
     
-
+# nutritional facts table
 class NutritionFact(models.Model):
     Name = models.CharField(max_length=100, blank= True)
     Value = models.CharField(max_length=100, blank= True)
@@ -135,8 +135,8 @@ class ReviewModel(models.Model):
 
 # post comment  
 class RecipePostCommentModel(models.Model):
-    revw_id = models.AutoField(primary_key=True)
-    review = models.TextField(null=True)
+    comment_id = models.AutoField(primary_key=True)
+    comment = models.TextField(null=True)
     post_id = models.ForeignKey(RecipePostModel, on_delete=models.CASCADE)
     user_id = models.ForeignKey(UserModel, on_delete=models.CASCADE)
 

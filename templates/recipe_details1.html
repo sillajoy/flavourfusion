@@ -72,16 +72,4 @@
   </div>
 </div>
 
-{% if comments %}
-<div class="container">
-  <h3 style="text-align: left; color: #4a4a4a; font-size: 2em;">Reviews</h3>
-  {% for x in comments %}
-  <div class="review" style="background-color: #f0f0f0; margin: 10px 0; padding: 20px; border-radius: 5px;">
-      <h6 style="font-size: 1.2em;"><strong style="color: #2a2a2a;">{{x.user_id.user_name}}</strong> : <span style="color: #606060;">{{x.review}}</span></h6>
-  </div>
-  {% endfor %}
-</div>
-{% endif %}
-
-
 {% endblock %}

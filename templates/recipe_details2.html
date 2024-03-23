@@ -365,6 +365,51 @@ footer .btn-floating:hover i {
   height: 100%;
   flex-direction: row;
 }
+/* comments */
+.comment {
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.comment p {
+    margin: 0;
+    font-size: 16px;
+}
+
+.add-comment-form {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.add-comment-form textarea {
+    width: calc(100% - 20px); /* Adjusted width */
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    resize: vertical;
+}
+
+.add-comment-form button {
+    width: 100%;
+    padding: 10px 20px;
+    background-color: #ff8929; /* Button color */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.add-comment-form button:hover {
+    background-color: #d77c24; /* Hover color */
+}
 
 </style>
 
@@ -524,6 +569,30 @@ footer .btn-floating:hover i {
     <p style="font-size: 1em; line-height: 1.6;">{{ additional_notes }}</p>
   </div>
 {% endif %}
+
+<div class="container">
+  <h1>Comments</h1>
+  <!-- Add new comment form -->
+  <div class="add-comment-form">
+    <form method="POST"> 
+        {% csrf_token %}
+        <input type="hidden" name="id" value="{{ post_id }}" />
+        <textarea placeholder="Add your comment here" rows="4" name="comment"></textarea>
+        <button type="submit" formaction="{% url 'details2' %}">Post Comment</button>
+    </form>
+  </div>
+
+  <hr>
+
+  <!-- Existing comments -->
+  <div id="comments">
+    {% for x in comments %}
+      <div class="comment">
+          <p><strong>{{x.user_id.user_name}}:</strong> {{x.comment}}</p>
+      </div>
+    {% endfor %}
+  </div>
+</div>
 
 
 <!-- footer -->
