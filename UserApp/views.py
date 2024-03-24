@@ -487,6 +487,58 @@ def recipe_update_details(request, id):
                 fact.Value = updated_value
                 fact.save()
 
+        # ingredients update
+        new_ingredients = request.POST.getlist('ingredients')  # Get list of ingredients from form
+        existing_ingredients = list(PostIngredientsModel.objects.filter(post=recipe))
+
+        # Update existing ingredients
+        for i, existing_ingredient in enumerate(existing_ingredients):
+            if i < len(new_ingredients):
+                existing_ingredient.post_ingredient_detail = new_ingredients[i]
+                existing_ingredient.save()
+
+        # Procedure steps update
+        new_steps = request.POST.getlist('steps') 
+        existing_steps = list(ProcedureStep.objects.filter(recipe=recipe).order_by('step_order'))
+
+        for i, new_step in enumerate(new_steps):
+            if i < len(existing_steps):
+                # Update existing step
+                existing_step = existing_steps[i]
+                existing_step.step_text = new_step
+                existing_step.save()
+
+        # update images
+        images_instance = RecipeImagesModel.objects.filter(recipe=recipe).first()
+        if images_instance is not None:
+            if 'main_dish_image' in request.FILES:
+                images_instance.main_dish_image = request.FILES['main_dish_image']
+            if 'preparation_image' in request.FILES:
+                images_instance.preparation_image = request.FILES['preparation_image']
+            if 'final_result_image' in request.FILES:
+                images_instance.final_result_image = request.FILES['final_result_image']
+            images_instance.save()
+
+        # update tags for the recipe
+        new_tags_data = request.POST.get('tags_data')
+        new_tags = new_tags_data.split(',')
+
+        # Fetch the existing tags from the database
+        existing_tags = list(TagsModel.objects.filter(post_id=recipe.post_id))
+
+        # Update existing tags and create new tags if necessary
+        for i, new_tag in enumerate(new_tags):
+            if i < len(existing_tags):
+                # Update existing tag
+                existing_tag = existing_tags[i]
+                existing_tag.tag_name = new_tag
+                existing_tag.save()
+            else:
+                new_tag_instance = TagsModel(tag_name=new_tag, post_id=recipe)
+                new_tag_instance.save()
+
+
+
 
         return redirect('/profile')
 

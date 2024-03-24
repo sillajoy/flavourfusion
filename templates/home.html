@@ -139,7 +139,7 @@
                         </div>
                         <div class="card-body">
                           <a href="{% url 'view_recipe' recipe_id=recipe.post_id %}" class="text"><h5 class="no-underline" style="text-align: left;">{{ recipe.post_title }}</h5></a>
-                          <a href="#"><p class="no-underline" style="color: #000000; font-style: italic">{{ recipe.user_id.user_name }}</p></a>
+                          <a href="userprofile/{{ recipe.user_id.user_id }}"><p class="no-underline" style="color: #000000; font-style: italic">{{ recipe.user_id.user_name }}</p></a>
                         </div>
                     </div>
                 </div>

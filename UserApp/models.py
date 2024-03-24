@@ -101,7 +101,7 @@ class NutritionFact(models.Model):
     def __str__(self):
         return f'{self.Name}- {self.post.post_title}'
 
-# tag table
+# tags table
 class TagsModel(models.Model):
     tag_id = models.AutoField(primary_key=True)
     tag_name = models.CharField(max_length=50)
