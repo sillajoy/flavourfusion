@@ -126,8 +126,9 @@ class PostIngredientsModel(models.Model):
 
 # review table
 class ReviewModel(models.Model):
-    revw_id = models.AutoField(primary_key=True)
-    revw = models.TextField()
+    review_id = models.AutoField(primary_key=True)
+    review_overall = models.CharField(max_length=50, null=True)
+    review = models.TextField()
     user_id = models.ForeignKey(UserModel, on_delete=models.CASCADE)
 
     class Meta():
@@ -177,6 +178,16 @@ class SavedRecipe(models.Model):
 
     def __str__(self):
         return f'{self.recipe.post_title}'
+    
+# ingredients list grocery 
+class Ingredients(models.Model):
+    name = models.CharField(max_length=100)
+
+    class Meta():
+        db_table = 'ingredients'
+
+    def __str__(self):
+        return f'{self.name}'
 
 # grocery shopping list    
 class ShoppingListItem(models.Model):
@@ -189,13 +200,3 @@ class ShoppingListItem(models.Model):
 
     def __str__(self):
         return self.ingredient.post_ingredient_detail
-
-# ingredients list grocery 
-class Ingredients(models.Model):
-    name = models.CharField(max_length=100)
-
-    class Meta():
-        db_table = 'ingredients'
-
-    def __str__(self):
-        return f'{self.name}'

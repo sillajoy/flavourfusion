@@ -18,6 +18,59 @@
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .carousel-item {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .content {
+            margin: 0 auto;
+            max-width: 600px;
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .experience {
+            font-weight: bold;
+            font-size: 20px;
+            margin-bottom: 10px;
+            text-align: left;
+            margin-left: 20px;
+        }
+
+        .experience span {
+            color: #007bff; /* Change color to match Bootstrap primary color */
+            font-weight: bold; /* Make the text bold */
+        }
+
+        .carousel-control-prev-icon, .carousel-control-next-icon {
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+        }
+
+        .carousel-control-prev-icon::before, .carousel-control-next-icon::before {
+            color: #fff;
+            font-size: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .carousel-item {
+                padding: 20px;
+            }
+        }
+  </style>
+
 {% endblock %}
 
 {% block title %} <title>Flavour Fusion About Page</title> {% endblock %}
@@ -108,9 +161,35 @@
     <i class="fa fa-message-dots fa-2x mb-3"></i>
     <h2 class="font-weight-light">Feedback</h2>
     <p class="font-italic text-muted mb-4">Your Thoughts Matter: Share Your Experience with Us.</p>
-    <a href="Flavour Fusion feedback.html" id="feedbackButton" class="btn px-5 rounded-pill shadow-sm" style="background: #ff943cef;;">Give Feedback</a>    
+    <a href="{% url 'feedback' %}" id="feedbackButton" class="btn px-5 rounded-pill shadow-sm" style="background: #ff943cef;;">Give Feedback</a>    
   </div>
 </div>
 </div>
+
+<div class="container mt-5">
+  <h3>Feedback Spotlight</h3>
+  <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      {% for x in reviews %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+          <div class="card border-0">
+            <h5 class="user-name" style=" font: 1.2em sans-serif; text-decoration: underline;">{{ x.user_id.user_name }}</h5>
+            <p class="content"><span class="experience">{{ x.review_overall }}:</span> {{ x.review }}</p>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+      
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+</div>
+
 
 {% endblock %}

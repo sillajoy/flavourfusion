@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <title>Login </title>
 </head>
 <style>
@@ -218,60 +219,97 @@ input {
 .container.right-panel-active .overlay-right {
 	transform: translateX(20%);
 }
-
-.social-container {
-	margin: 20px 0;
+.login_type {
+    display: flex;
+    justify-content: space-around;
+    border: 1px solid #333;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: #f2f2f2;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
-.social-container a {
-	border: 1px solid #DDDDDD;
-	border-radius: 50%;
-	display: inline-flex;
-	justify-content: center;
-	align-items: center;
-	margin: 0 5px;
-	height: 40px;
-	width: 40px;
+.login_type label {
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 3px;
+    transition: background-color 0.3s ease;
 }
+
+.login_type input[type="radio"] {
+    display: none;
+}
+
+.login_type label {
+    cursor: pointer;
+}
+
+.login_type .fa {
+    margin-right: 5px;
+}
+
+.login_type input[type="radio"] + label {
+    color: #333;
+}
+
+.login_type input[type="radio"]:checked + label {
+    color: #FF4B2B;
+    background-color: #ddd;
+}
+
+.login_type input[type="radio"] + label:hover {
+    text-decoration: underline;
+    background-color: #eee;
+}
+
 
 </style>
 <body>
   
-<div class="container" id="container">
-	<div class="form-container sign-up-container">
-		<form method="POST" action="{% url 'register_user' %}">
-      {% csrf_token %}
-			<h1>Create Account</h1>
-			<input type="text" placeholder="Create Username"  name="name" required />
-			<input type="password" placeholder="Create Password" name="password" required />
-			<button>Sign Up</button>
-		</form>
-	</div>
-	<div class="form-container sign-in-container">
-		<form method="POST" action="{% url 'login' %}">
-      {% csrf_token %}
-			<h1>Sign in</h1>
-			<input type="text" placeholder="Username" name="name" required />
-			<input type="password" placeholder="Password" name="password" required />
-			<a href="#">Forgot your password?</a>
-			<button>Sign In</button>
-		</form>
-	</div>
-	<div class="overlay-container">
-		<div class="overlay">
-			<div class="overlay-panel overlay-left">
-				<h1>Welcome Back!</h1>
-				<p>To keep connected with us please login with your personal info</p>
-				<button class="ghost" id="signIn">Sign In</button>
-			</div>
-			<div class="overlay-panel overlay-right">
-				<h1>Hello, Friend!</h1>
-				<p>Enter your details and start journey with us</p>
-				<button class="ghost" id="signUp">Sign Up</button>
+	<div class="container" id="container">
+		<div class="form-container sign-up-container">
+			<form method="POST" action="{% url 'register_user' %}">
+				{% csrf_token %}
+				<h1>Create Account</h1>
+				<input type="text" placeholder="Create Username" name="name" required />
+				<input type="password" placeholder="Create Password" name="password" required />
+				<button>Sign Up</button>
+			</form>
+		</div>
+		<div class="form-container sign-in-container">
+			<form method="POST" action="{% url 'login' %}">
+				{% csrf_token %}
+				<h1>Sign in</h1>
+				<div class="login_type">
+					<input type="radio" id="user" name="login_type" value="user" checked>
+					<label for="user" style="text-decoration: none;"><i class="fa fa-user"></i> User</label>
+					<input type="radio" id="admin" name="login_type" value="admin">
+					<label for="admin" style="text-decoration: none;"><i class="fa fa-lock"></i> Admin</label>
+				</div>
+				<input type="text" placeholder="Username" name="name" required />
+				<input type="password" placeholder="Password" name="password" required />
+				<a href="#">Forgot your password?</a>
+				<button>Sign In</button>
+			</form>
+		</div>
+		
+		<div class="overlay-container">
+			<div class="overlay">
+				<div class="overlay-panel overlay-left">
+					<h1>Welcome Back!</h1>
+					<p>To keep connected with us please login with your personal info</p>
+					<button class="ghost" id="signIn">Sign In</button>
+				</div>
+				<div class="overlay-panel overlay-right">
+					<h1>Hello, Friend!</h1>
+					<p>Enter your details and start journey with us</p>
+					<button class="ghost" id="signUp">Sign Up</button>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
+	
 
 
 <script>

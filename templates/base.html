@@ -162,8 +162,7 @@ footer .btn-floating:hover i {
     {% endif %}
     <a href="{% url 'profile' %}"><i class="fas fa-user"></i> Profile</a>
     <a href="{% url 'grocery' %}"><i class="fas fa-list-check"></i> Grocery List</a>
-    <a href="{% url 'about' %}"><i class="fas fa-info-circle"></i> About Page</a>
-    <a href="#"><i class="fas fa-envelope"></i> Contact Us</a>
+    <a href="{% url 'about' %}"><i class="fas fa-info-circle"></i> About Us</a>
   </div>
 
 <div class="container-fluid nav  custom-navbar">
@@ -241,7 +240,11 @@ function printpage() {
   window.print();
     
 }
-
+// feedback carousel
+var myCarousel = document.getElementById('carouselExampleIndicators');
+        var carousel = new bootstrap.Carousel(myCarousel, {
+            interval: 3000 // Change slide every 3 seconds (3000 milliseconds)
+        });
 </script>
 
 

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Form</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #ff8929ef;
+            text-align: center;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+
+        .form-label {
+            font-weight: bold;
+            color: #ff8929ef;
+        }
+
+        .form-check-input:checked+.form-check-label {
+            font-weight: bold;
+            color: #ff8929ef;
+        }
+
+        .form-control {
+            border-color: #ced4da;
+            border-radius: 20px;
+        }
+
+        .btn {
+            background-color: #ff8929ef;
+            border-color: #ff8929ef;
+            border-radius: 20px;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background-color: #ff8929ef;
+            border-color: #ff8929ef;
+        }
+
+        .btn:focus {
+            box-shadow: 0 0 0 0.2rem #ff821cef;
+        }
+
+        .form-check-input {
+            background-color: #ff8929ef;
+            border-radius: 50%;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        .form-check-input:checked {
+            background-color: #ff8929ef;
+            border-color: #ff8929ef;
+        }
+
+        .form-check-input:checked::after {
+            content: '';
+            display: block;
+            width: 10px;
+            height: 10px;
+            background-color: #fff;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Additional Styling */
+        .form-check {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-check-label {
+            cursor: pointer;
+            margin-left: 5px;
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+        }
+
+        .btn-lg {
+            padding: 12px 20px;
+            font-size: 18px;
+        }
+
+        /* Custom Styling */
+        textarea.form-control {
+            resize: none;
+        }
+
+        .btn {
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .btn-success {
+            background-color: #ff8929ef !important;
+            border-color: #ff8929ef !important;
+        }
+
+        .btn-success:hover {
+            background-color: #ff8929ef !important;
+            border-color: #ff8929ef !important;
+        }
+
+        .btn-success:focus {
+            box-shadow: 0 0 0 0.2rem rgba(224, 127, 15, 0.5) !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Feedback</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label class="form-label" for="rating">How do you rate your overall experience?</label>
+                <div class="d-flex justify-content-between">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="rating" id="rating_bad" value="Bad">
+                        <label class="form-check-label" for="rating_bad">Bad</label>
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="rating" id="rating_good" value="Good">
+                        <label class="form-check-label" for="rating_good">Good</label>
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="rating" id="rating_excellent" value="Excellent">
+                        <label class="form-check-label" for="rating_excellent">Excellent!</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="feedback_comments">Feedback:</label>
+                <textarea class="form-control" required rows="6" name="feedback"></textarea>
+            </div>
+            
+            <button type="submit" formaction="{% url 'feedback' %}" class="btn btn-lg">Post</button>
+        </form>
+    </div>
+</body>
+</html>

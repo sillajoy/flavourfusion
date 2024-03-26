@@ -3,7 +3,7 @@ import json
 from django.shortcuts import get_object_or_404, render, redirect, HttpResponse
 from django.db.models import Q
 from datetime import date
-from AdminApp.models import AdsModel
+from AdminApp.models import *
 from  UserApp.models import *
 from django.contrib import messages
 
@@ -117,6 +117,17 @@ def christmas(request):
     return render(request, 'christmas.html', context)
 
 
+def about(request):
+    """
+    Display information about the website.
+
+    Render the 'about.html'
+
+    """
+    reviews = ReviewModel.objects.all()
+    return render(request, 'about.html', {'reviews': reviews})
+
+
 def view(request, recipe_id):
     recipe = get_object_or_404(RecipePostModel, pk=recipe_id)
     images = RecipeImagesModel.objects.filter(recipe=recipe_id)
@@ -152,14 +163,6 @@ def view(request, recipe_id):
     else:
         return render(request, 'recipe_details1.html', {'recipes': recipe, 'images': images})
 
-def about(request):
-    """
-    Display information about the website.
-
-    Render the 'about.html'
-
-    """
-    return render(request, 'about.html')
 
 def view2(request):
     if request.method == 'POST':
@@ -219,11 +222,19 @@ def login(request):
     if request.method == 'POST':
         username = request.POST.get('name')
         password = request.POST.get('password')
-        user = UserModel.objects.filter(user_name=username, user_password=password).first()
-
-        if user:
-            request.session['user_id'] = user.user_id
-            return redirect('/')
+        login_type = request.POST.get('login_type')
+        print(f"Login Attempt: username={username}, password={password}, login_type={login_type}")
+        if login_type == 'user':
+            user = UserModel.objects.filter(user_name=username, user_password=password).first()
+            if user:
+                request.session['user_id'] = user.user_id
+                return redirect('/')
+        
+        elif login_type == 'admin':
+            admin = AdminModel.objects.filter(admin_username=username, admin_password=password).first()
+            if admin:
+                request.session['admin_id'] = admin.admin_id
+                return redirect('admin_dashboard')
 
     return render(request, 'login_new.html')
 
@@ -567,9 +578,9 @@ def grocery(request):
                 recipe_items[recipe_title] = []
             recipe_items[recipe_title].append(item)
         
-        ingredients = Ingredients.objects.all()
+        # ingredients = Ingredients.objects.all()
 
-        return render(request, 'grocery.html', {'recipe_items': recipe_items, 'ingredients': ingredients})
+        return render(request, 'grocery.html', {'recipe_items': recipe_items})
     else:
         return render(request, 'login.html')
 
@@ -599,9 +610,9 @@ def add_ingredients(request):
                 recipe_items[recipe_title] = []
             recipe_items[recipe_title].append(item)
 
-        ingredients = Ingredients.objects.all()
+        # ingredients = Ingredients.objects.all()
 
-        return render(request, 'grocery.html', {'recipe_items': recipe_items, 'ingredients': ingredients})
+        return render(request, 'grocery.html', {'recipe_items': recipe_items})
 
 
 def delete_item(request, item_id):
@@ -616,3 +627,23 @@ def user_profile(request, id):
     user_recipe_posts = RecipePostModel.objects.filter(user_id=user)
     user_recipe_posts_count = user_recipe_posts.count()
     return render(request, 'user_profile.html', {'user': user, 'user_recipe_posts': user_recipe_posts, 'user_recipe_posts_count': user_recipe_posts_count})
+
+
+def submit_feedback(request):
+    if request.method == 'POST':
+        rating = request.POST.get('rating')
+        feedback = request.POST.get('feedback')
+        
+        if 'user_id' in request.session:
+            user_id = request.session['user_id']
+            user = UserModel.objects.filter(user_id=user_id).first()
+            if user:
+                review = ReviewModel(review_overall=rating, review=feedback, user_id=user)
+                review.save()
+                return redirect('/about')  
+            else:
+                return redirect('/login')  
+        else:
+            return redirect('/login') 
+
+    return render(request, 'feedback.html')

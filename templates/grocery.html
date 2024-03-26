@@ -123,22 +123,6 @@
 <body>
 <div class="container">
     <h1 class="mt-3 grocery-heading">Grocery Shopping List</h1>
-    <button id="IngredientsBtn" class="btn btn-custom mt-3 mb-3">Add Ingredients</button>
-    <div class="ingredients">
-        <div class="row" style="margin-top: 50px;">
-            {% for ingredient in ingredients %}
-                <div class="col-md-3">
-                    <form action="{% url 'add_ingredients' %}" method="post">
-                        {% csrf_token %}
-                        <button type="submit" class="btn mt-3 mb-3" name="ingredient_id" value="{{ ingredient.id }}">{{ ingredient.name }}</button>
-                    </form>
-                </div>
-                {% if forloop.counter|divisibleby:4 and not forloop.last %}
-                    </div><div class="row" style="margin-top: 20px;">
-                {% endif %}
-            {% endfor %}
-        </div>
-    </div>
 
     <div class="grocery-list">
         {% if recipe_items %}
