@@ -6,7 +6,7 @@
   <title>Admin Dashboard - Recipe Website</title>
   <!-- Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <!-- icons -->
+  <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
  <style>
@@ -16,7 +16,7 @@
   }
 
   .navbar {
-    background-color: #f3880e !important; 
+    background-color: #343a40 !important; 
   }
 
   .navbar-brand,
@@ -48,13 +48,11 @@
 
   .nav-link {
     color: #000000 !important; 
-    transition: color 0.3s, transform 0.3s, box-shadow 0.3s; 
   }
 
   .nav-link:hover {
+    background-color: #454d55; 
     color: #ffffff !important;
-    transform: translateY(-2px); 
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
   }
 
   .content {
@@ -66,7 +64,7 @@
   }
 
   h1, h2, h3 {
-    color: #2b2c2e; 
+    color: #343a40; 
   }
 
   p {
@@ -74,61 +72,15 @@
     line-height: 1.6; 
   }
 
-  .card {
-      background-color: #fff;
-      box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
-      border-radius: 20px;
-      padding: 20px;
-      margin: 10px;
-      width: 250px;
-      height: 200px;
-      text-align: center;
-      position: relative;
-      transition: transform 0.3s ease;
-      overflow: hidden;
-      border: 1px solid #ccc;
-      background: linear-gradient(135deg, #ffffff, #f0f0f0);
+  a {
+    color: #007bff; 
+    text-decoration: none; 
+    transition: color 0.3s ease; 
   }
 
-  .card:hover {
-      transform: translateY(-10px);
+  a:hover {
+    color: #0056b3;
   }
-
-  .icon-box {
-      position: absolute;
-      top: 0px;
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: #ff6b6b;
-      padding: 15px;
-      border-radius: 50%;
-      transition: background-color 0.3s ease;
-      z-index: 1;
-  }
-
-  .icon-box i {
-      color: #fff;
-      font-size: 2em;
-  }
-
-  .card:hover .icon-box {
-      background-color: #ff3e3e;
-  }
-
-  .card h1 {
-      font-size: 2em;
-      color: #323c43;
-      margin-top: 50px;
-      z-index: 0;
-  }
-
-  .card h2 {
-      color: #ee5f0d;
-      font-size: 2em;
-      z-index: 0;
-      margin-top: 5px;
-  }
-
 </style>
 
 </head>
@@ -136,14 +88,14 @@
 
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Admin Dashboard</a>
+    <a class="navbar-brand" href="#">Recipe Admin Dashboard</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
+        <li class="nav-item active">
           <a class="nav-link" href="#home">Home</a>
         </li>
         <li class="nav-item">
@@ -163,7 +115,7 @@
         <div class="sidebar-sticky">
           <ul class="nav flex-column">
             <li class="nav-item">
-              <a class="nav-link" href="#dashboard">
+              <a class="nav-link active" href="#dashboard">
                 <i class="fas fa-tachometer-alt"></i> Dashboard
               </a>
             </li>
@@ -183,7 +135,7 @@
 
       <!-- Content -->
       <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-        <div class="content" id="home" style="display: none;">
+        <div class="content" id="home">
           <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">Home</h1>
           </div>
@@ -205,31 +157,16 @@
           </div>
         </div>
 
-        <div class="content" id="dashboard">
+        <div class="content" id="dashboard" style="display: none;">
           <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">Dashboard</h1>
           </div>
-          <div class="row justify-content-center"> <!-- Add justify-content-center class to center the cards -->
-            <div class="col-md-4"> <!-- Adjust the width of each card -->
-              <div class="card">
-                <div class="icon-box">
-                  <i class="fas fa-user"></i>
-                </div>
-                <h1>53</h1>
-                <h2>Active Users</h2>
-              </div>
-            </div>
-            <div class="col-md-4"> <!-- Adjust the width of each card -->
-              <div class="card">
-                <div class="icon-box">
-                  <i class="fas fa-utensils"></i>
-                </div>
-                <h1>2,300</h1>
-                <h2>Total Recipes</h2>
-              </div>
+          <div class="row">
+            <div class="col-md-12">
+              <p>Welcome to the admin dashboard of the recipe website. You can manage recipes, users, and more from here.</p>
             </div>
           </div>
-        </div>        
+        </div>
 
         <div class="content" id="recipes" style="display: none;">
           <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -256,9 +193,11 @@
     </div>
   </div>
 
+  <!-- Bootstrap JS and dependencies -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <!-- Custom JavaScript for tab content display -->
   <script>
     document.querySelectorAll('.nav-link').forEach(function(element) {
       element.addEventListener('click', function(event) {
@@ -271,12 +210,9 @@
         document.querySelectorAll('.content').forEach(function(content) {
           content.style.display = 'none';
         });
-        document.querySelector(target).style.display = 'block'; // Display the clicked content
+        document.querySelector(target).style.display = 'block';
       });
     });
-
-    document.querySelector('#dashboard').style.display = 'block';
   </script>
-
 </body>
 </html>
