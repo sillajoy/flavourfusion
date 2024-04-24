@@ -28,4 +28,7 @@ urlpatterns = [
     path('delete/<int:item_id>/', views.delete_item, name='delete_item'),
     path('register_new_user', views.register_new_user, name='register_user'),
     path('userprofile/<int:id>/', views.user_profile, name='user_profile'),
+    path('archive/<int:post_id>/', views.archive_recipe_post, name='archive_recipe_post'),
+    path('archived', views.archive_recipe_post, name='archive_recipe_post'),
+    path('unarchive/<int:post_id>/', views.unarchive_recipe_post, name='unarchive_recipe_post'),
 ]

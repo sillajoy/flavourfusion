@@ -46,17 +46,23 @@
           <div class="col-md-5">
               <div id="CarouselTest" class="carousel slide" data-ride="carousel">
                   <div class="carousel-inner">
-                      {% for image in images %}
-                      <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                          <img class="d-block" src="{{ image.main_dish_image.url }}" alt="">
-                      </div>
-                      <div class="carousel-item">
-                          <img class="d-block" src="{{ image.preparation_image.url }}" alt="">
-                      </div>
-                      <div class="carousel-item">
-                          <img class="d-block" src="{{ image.final_result_image.url }}" alt="">
-                      </div>
-                      {% endfor %}
+                    {% for image in images %}
+                    {% if image.main_dish_image %}
+                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                            <img class="d-block" src="{{ image.main_dish_image.url }}" alt="">
+                        </div>
+                    {% endif %}
+                    {% if image.preparation_image %}
+                        <div class="carousel-item">
+                            <img class="d-block" src="{{ image.preparation_image.url }}" alt="">
+                        </div>
+                    {% endif %}
+                    {% if image.final_result_image %}
+                        <div class="carousel-item">
+                            <img class="d-block" src="{{ image.final_result_image.url }}" alt="">
+                        </div>
+                    {% endif %}
+                    {% endfor %}
                   </div>
                   <button class="carousel-control-prev" type="button" data-bs-target="#CarouselTest" data-bs-slide="prev">
                       <span class="carousel-control-prev-icon" aria-hidden="true"></span>

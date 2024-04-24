@@ -28,7 +28,7 @@ def home(request, sub_category_id=None):
 
             if viewed_post_subcategory_list:
                 most_common_subcategory_id = Counter(viewed_post_subcategory_list).most_common(1)[0][0]
-                recommended_recipes = RecipePostModel.objects.filter(sub_category_id=most_common_subcategory_id)[:3]
+                recommended_recipes = RecipePostModel.objects.filter(sub_category_id=most_common_subcategory_id, is_archived=False)[:3]
             else:
                 recommended_recipes = None
         except UserModel.DoesNotExist:
@@ -40,7 +40,7 @@ def home(request, sub_category_id=None):
             try:
                 viewed_post_subcategory_list = json.loads(viewed_post_subcategory_list)
                 most_common_subcategory_id = Counter(viewed_post_subcategory_list).most_common(1)[0][0]
-                recommended_recipes = RecipePostModel.objects.filter(sub_category_id=most_common_subcategory_id)[:3]
+                recommended_recipes = RecipePostModel.objects.filter(sub_category_id=most_common_subcategory_id, is_archived=True)[:3]
             except:
                 recommended_recipes = None
         else:
@@ -58,11 +58,11 @@ def home(request, sub_category_id=None):
     if sub_category_id:
         selected_subcategory = SubCategoryModel.objects.filter(sub_category_id=sub_category_id).first()
         if selected_subcategory:
-            recipes = RecipePostModel.objects.filter(sub_category_id=sub_category_id)
+            recipes = RecipePostModel.objects.filter(sub_category_id=sub_category_id, is_archived=False)
         else:
             return render(request, 'home.html', {'recipes': None, 'selected_subcategory_name': None, 'main_categories': main_categories, 'active_event': active_event, 'ads': ads, 'recommended_recipes': recommended_recipes})
     else:
-        recipes = RecipePostModel.objects.all().order_by('?')[:9] 
+        recipes = RecipePostModel.objects.filter(is_archived=False).order_by('?')[:9] 
         
     return render(request, 'home.html', {'recipes': recipes, 'selected_subcategory_name': selected_subcategory.sub_category_name if selected_subcategory else None, 'sub_category': selected_subcategory, 'main_categories': main_categories, 'active_event': active_event, 'ads': ads, 'recommended_recipes': recommended_recipes})
 
@@ -82,7 +82,7 @@ def search_view(request):
     subcategories = SubCategoryModel.objects.all()
     print("Request POST data:", request.POST)
 
-    results = RecipePostModel.objects.all()
+    results = RecipePostModel.objects.filter(is_archived=False)
 
     if query:
         results = results.filter(
@@ -108,7 +108,7 @@ def christmas(request):
 
     """
     event_instances = EventModel.objects.filter(event_name='Christmas').first() 
-    recipes = RecipePostModel.objects.filter(event_id=event_instances)
+    recipes = RecipePostModel.objects.filter(event_id=event_instances, is_archived=False)
 
     context = {
         'event_instance': event_instances,
@@ -281,10 +281,11 @@ def profile(request):
     if 'user_id' in request.session:
         user_id = request.session['user_id']
         user = UserModel.objects.filter(user_id=user_id).first()
-        user_recipe_posts = RecipePostModel.objects.filter(user_id=user)
+        user_recipe_posts = RecipePostModel.objects.filter(user_id=user, is_archived=False)
+        archive_recipe_posts = RecipePostModel.objects.filter(user_id=user, is_archived=True)
         user_recipe_posts_count = user_recipe_posts.count()
 
-        return render(request, 'profile.html', {'user': [user], 'user_recipe_posts': user_recipe_posts, 'user_recipe_posts_count': user_recipe_posts_count})
+        return render(request, 'profile.html', {'user': [user], 'user_recipe_posts': user_recipe_posts, 'user_recipe_posts_count': user_recipe_posts_count, 'archive_recipe_posts': archive_recipe_posts})
     else:
         return redirect('/login')
     
@@ -548,9 +549,6 @@ def recipe_update_details(request, id):
                 new_tag_instance = TagsModel(tag_name=new_tag, post_id=recipe)
                 new_tag_instance.save()
 
-
-
-
         return redirect('/profile')
 
 
@@ -624,7 +622,7 @@ def delete_item(request, item_id):
 
 def user_profile(request, id):
     user = UserModel.objects.get(user_id=id)
-    user_recipe_posts = RecipePostModel.objects.filter(user_id=user)
+    user_recipe_posts = RecipePostModel.objects.filter(user_id=user, is_archived=False)
     user_recipe_posts_count = user_recipe_posts.count()
     return render(request, 'user_profile.html', {'user': user, 'user_recipe_posts': user_recipe_posts, 'user_recipe_posts_count': user_recipe_posts_count})
 
@@ -647,3 +645,29 @@ def submit_feedback(request):
             return redirect('/login') 
 
     return render(request, 'feedback.html')
+
+def archive_recipe_post(request, post_id):
+    recipe_post = get_object_or_404(RecipePostModel, pk=post_id)
+
+    recipe_post.is_archived = True
+    recipe_post.save()
+
+    return redirect('/profile')
+
+def archive_recipe_post(request):
+    if 'user_id' in request.session:
+        user_id = request.session['user_id']
+        user = UserModel.objects.filter(user_id=user_id).first()
+        archived_recipe_posts = RecipePostModel.objects.filter(user_id=user, is_archived=True)
+
+        return render(request, 'archived.html', {'archived_recipe_posts': archived_recipe_posts})
+    else:
+        return redirect('/login')
+    
+def unarchive_recipe_post(request, post_id):
+    recipe_post = get_object_or_404(RecipePostModel, pk=post_id)
+
+    recipe_post.is_archived = False
+    recipe_post.save()
+
+    return redirect('/profile') 

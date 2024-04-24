@@ -70,6 +70,11 @@ class EventSubcategoryModel(models.Model):
 
 # Post table
 class RecipePostModel(models.Model):
+    ARCHIVED_CHOICES = [
+        (True, 'Archived'),
+        (False, 'Not Archived'),
+    ]
+
     post_id = models.AutoField(primary_key=True)
     post_title = models.CharField(max_length=100)
     post_time_needed = models.CharField(max_length=50)
@@ -81,6 +86,8 @@ class RecipePostModel(models.Model):
     user_id = models.ForeignKey(UserModel, on_delete=models.CASCADE)
     event_id = models.ForeignKey(EventModel, on_delete=models.CASCADE, null=True, blank=True)
     sub_category_id = models.ForeignKey(SubCategoryModel, on_delete=models.CASCADE)
+    is_archived = models.BooleanField(choices=ARCHIVED_CHOICES, default=False)
+    created_date = models.DateField(auto_now_add=True)
 
     class Meta():
         db_table = 'recipe_post_table'

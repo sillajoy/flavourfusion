@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,19 +10,20 @@
   <!-- icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
- <style>
-  body {
-    background-color: #f8f9fa; 
-    font-family: Arial, sans-serif; 
+<style>
+ 
+ body {
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
   }
 
   .navbar {
-    background-color: #f3880e !important; 
+    background-color: #f3880e !important;
   }
 
   .navbar-brand,
   .navbar-nav .nav-link {
-    color: #ffffff !important; 
+    color: #ffffff !important;
   }
 
   /* Active tab indicator */
@@ -37,97 +39,165 @@
   }
 
   .sidebar-sticky {
-    color: #000000 !important; 
+    color: #000000 !important;
     padding-top: 20px;
     padding-bottom: 20px;
   }
+
   .sidebar-heading {
     font-size: 1.2rem;
     padding: 10px 20px;
   }
 
   .nav-link {
-    color: #000000 !important; 
-    transition: color 0.3s, transform 0.3s, box-shadow 0.3s; 
+    color: #000000 !important;
+    transition: color 0.3s, transform 0.3s, box-shadow 0.3s;
   }
 
   .nav-link:hover {
-    color: #ffffff !important;
-    transform: translateY(-2px); 
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    color: #000000 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
 
   .content {
-    background-color: #ffffff; 
-    border-radius: 10px; 
+    background-color: #ffffff;
+    border-radius: 10px;
     padding: 20px;
     margin-top: 20px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); 
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   }
 
-  h1, h2, h3 {
-    color: #2b2c2e; 
+  h1,
+  h2,
+  h3 {
+    color: #2b2c2e;
   }
 
   p {
-    color: #666666; 
-    line-height: 1.6; 
+    color: #666666;
+    line-height: 1.6;
   }
 
   .card {
-      background-color: #fff;
-      box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
-      border-radius: 20px;
-      padding: 20px;
-      margin: 10px;
-      width: 250px;
-      height: 200px;
-      text-align: center;
-      position: relative;
-      transition: transform 0.3s ease;
-      overflow: hidden;
-      border: 1px solid #ccc;
-      background: linear-gradient(135deg, #ffffff, #f0f0f0);
-  }
-
-  .card:hover {
-      transform: translateY(-10px);
+    background-color: #fff;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    padding: 20px;
+    margin: 10px;
+    width: 250px;
+    height: 200px;
+    text-align: center;
+    position: relative;
+    transition: transform 0.3s ease;
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background: linear-gradient(135deg, #ffffff, #f0f0f0);
+    transition: transform 0.3s ease, background-color 0.3s ease;
   }
 
   .icon-box {
-      position: absolute;
-      top: 0px;
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: #ff6b6b;
-      padding: 15px;
-      border-radius: 50%;
-      transition: background-color 0.3s ease;
-      z-index: 1;
+    position: absolute;
+    top: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #ff6b6b;
+    padding: 15px;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+    z-index: 1;
   }
 
   .icon-box i {
-      color: #fff;
-      font-size: 2em;
+    color: #fff;
+    font-size: 2em;
   }
 
   .card:hover .icon-box {
-      background-color: #ff3e3e;
+    background-color: #ff3e3e;
   }
 
   .card h1 {
-      font-size: 2em;
-      color: #323c43;
-      margin-top: 50px;
-      z-index: 0;
+    font-size: 2em;
+    color: #323c43;
+    margin-top: 50px;
+    z-index: 0;
   }
 
   .card h2 {
-      color: #ee5f0d;
-      font-size: 2em;
-      z-index: 0;
-      margin-top: 5px;
+    color: #ee5f0d;
+    font-size: 2em;
+    z-index: 0;
+    margin-top: 5px;
   }
+
+  .card-block h6 {
+    font-size: 1.5em;
+    color: #3a2203;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+
+  .card:hover {
+    transform: scale(1.05);
+    background-color: #f5f5f5;
+  }
+
+  .table-responsive {
+    overflow-x: auto;
+  }
+
+  .table {
+    width: 100%;
+    margin-bottom: 1rem;
+    background-color: transparent;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .table th,
+  .table td {
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+    font-size: 0.9rem;
+    text-align: left;
+  }
+
+  .table thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+    background-color: #343a40;
+    color: #ffffff;
+    border-color: #454d55;
+  }
+
+  .table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f8f9fa;
+  }
+
+  .table-hover tbody tr:hover {
+    background-color: #e9ecef;
+  }
+
+  .btn {
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+
+  .btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: #ffffff;
+  }
+
+  .btn-danger:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+    color: #ffffff;
+  }
+  
 
 </style>
 
@@ -136,19 +206,13 @@
 
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Admin Dashboard</a>
+    <a class="navbar-brand" href="">Admin Dashboard</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="#home">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#settings">Settings</a>
-        </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Logout</a>
         </li>
@@ -205,53 +269,186 @@
           </div>
         </div>
 
-        <div class="content" id="dashboard">
+        <div class="content" id="dashboard" style="display: none;">
           <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">Dashboard</h1>
           </div>
-          <div class="row justify-content-center"> <!-- Add justify-content-center class to center the cards -->
-            <div class="col-md-4"> <!-- Adjust the width of each card -->
-              <div class="card">
-                <div class="icon-box">
-                  <i class="fas fa-user"></i>
+          <div class="row no-gutters">
+            <div class="col-md-4">
+              <div class="card bg-c-blue order-card">
+                <div class="card-block">
+                  <i class="fas fa-users fa-3x" style="color: #000000;"></i> 
+                  <h6 class="m-b-20">Total Users</h6>
+                  <h2 class="text-center"><span>{{ user_count }}</span></h2>
                 </div>
-                <h1>53</h1>
-                <h2>Active Users</h2>
               </div>
             </div>
-            <div class="col-md-4"> <!-- Adjust the width of each card -->
-              <div class="card">
-                <div class="icon-box">
-                  <i class="fas fa-utensils"></i>
+            <div class="col-md-4">
+              <div class="card bg-c-blue order-card">
+                <div class="card-block">
+                  <i class="fas fa-utensils fa-3x" style="color: #000000;"></i> 
+                  <h6 class="m-b-20">Total Recipes</h6>
+                  <h2 class="text-center"><span>{{ recipe_count }}</span></h2>
                 </div>
-                <h1>2,300</h1>
-                <h2>Total Recipes</h2>
+              </div>
+            </div>
+            <div class="container">
+              <div class="row mt-4">
+                <div class="col-md-4">
+                    <div class="card bg-c-blue order-card">
+                        <div class="card-block">
+                            <h6 class="m-b-20">Main Category:{{ category.main_category_name }}</h6>
+                            <p>Number of Subcategories: {{ category.subcategorymodel_set.all|length }}</p>
+                        </div>
+                    </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>        
-
+        </div>
+              
         <div class="content" id="recipes" style="display: none;">
           <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">Recipes</h1>
+              <h1 class="h2">Recipes</h1>
           </div>
           <div class="row">
-            <div class="col-md-12">
-              <p>This is the recipes page content. You can manage recipes here.</p>
+            <div class="col-md-4 ">
+              <div class="card bg-c-blue order-card">
+                <div class="card-block">
+                  <i class="fas fa-utensils fa-3x" style="color: #000000;"></i> 
+                  <h6 class="m-b-20">Total Recipes</h6>
+                  <h2 class="text-center"><span>{{ recipe_count }}</span></h2>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card bg-c-green order-card">
+                  <div class="card-block">
+                      <i class="fas fa-utensils fa-3x" style="color: #000000;"></i> 
+                      <h6 class="m-b-20">Active Recipes</h6>
+                      <h2 class="text-center"><span>{{ not_archived_recipe_count }}</span></h2>
+                  </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card bg-c-red order-card">
+                  <div class="card-block">
+                      <i class="fas fa-utensils fa-3x" style="color: #000000;"></i> 
+                      <h6 class="m-b-20">Archived Recipes</h6>
+                      <h2 class="text-center"><span>{{ archive_recipe_count }}</span></h2>
+                  </div>
+              </div>
+            </div>
+            <div class="container d-flex flex-wrap">
+              {% for recipe in recipes %}
+              <div class="col-md-4 col-xl-3">
+                  <div class="card bg-c-blue order-card">
+                      <div class="card-block">
+                          <h6 class="m-b-20" style="font-size: 1rem;">{{ recipe.post_title }}</h6>
+                          <p>Posted by: {{ recipe.user_id.user_name }}</p> 
+                          <p>Created Date: {{ recipe.created_date }}</p>
+                          <div class="text-center">
+                            {% if recipe.is_archived %}
+                            <form method="POST" action="{% url 'unarchive_recipe' %}">
+                              {% csrf_token %}
+                              <input type="hidden" name="recipe_id" value="{{ recipe.post_id }}">
+                              <button type="submit" class="btn btn-success">Unarchive</button>
+                            </form>
+                            {% else %}
+                            <form method="POST" action="{% url 'archive_recipe' %}">
+                              {% csrf_token %}
+                              <input type="hidden" name="recipe_id" value="{{ recipe.post_id }}">
+                              <button type="submit" class="btn btn-danger">Archive</button>
+                            </form>
+                            {% endif %}
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              {% endfor %}
             </div>
           </div>
         </div>
-
+      
+        
         <div class="content" id="users" style="display: none;">
           <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">Users</h1>
+              <h1 class="h2">Users</h1>
           </div>
-          <div class="row">
-            <div class="col-md-12">
-              <p>This is the users page content. You can manage users here.</p>
+          <div class="row no-gutters">
+              <div class="col-md-4">
+                  <div class="card bg-c-blue order-card">
+                      <div class="card-block">
+                          <i class="fas fa-users fa-3x" style="color: #000000;"></i> 
+                          <h6 class="m-b-20">Total Users</h6>
+                          <h2 class="text-center"><span>{{ user_count }}</span></h2>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-md-4">
+                  <div class="card bg-c-green order-card">
+                      <div class="card-block">
+                          <i class="fas fa-user-check fa-3x" style="color: #000000;"></i> 
+                          <h6 class="m-b-20">Active Users</h6>
+                          <h2 class="text-center"><span>{{ active_user_count }}</span></h2>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-md-4">
+                  <div class="card bg-c-red order-card">
+                      <div class="card-block">
+                          <i class="fas fa-user-times fa-3x" style="color: #000000;"></i> 
+                          <h6 class="m-b-20">Inactive Users</h6>
+                          <h2 class="text-center"><span>{{ inactive_user_count }}</span></h2>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-md-12 mt-5">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Image</th>
+                                <th scope="col">Username</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Post</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          {% for user in users %}
+                          <tr>
+                              <td>
+                                {% if user.user_image %}
+                                <img src="{{ user.user_image.url }}" style="width: 50px; height: 50px;">
+                                {% else %}
+                                <img src="{% static 'images/default_user_profile.jpg' %}" style="width: 50px; height: 50px;">
+                                {% endif %}
+                              </td>
+                              <td>{{ user.user_name }}</td>
+                              <td>{% if user.user_status %}Active{% else %}Inactive{% endif %}</td>
+                              <td>{{ user.post_count }}</td>
+                              <td>
+                                <form method="POST">
+                                  {% csrf_token %}
+                                  <input type="hidden" name="user_id" value="{{ user.user_id }}">
+                                  {% if user.user_status %}
+                                      <button type="submit" class="btn btn-danger">Deactivate User</button>
+                                  {% else %}
+                                      <button type="submit" class="btn btn-success">Activate User</button>
+                                  {% endif %}
+                                </form>
+                              </td>
+                          </tr>
+                          {% endfor %}
+                      </tbody>                      
+                    </table>
+                </div>
             </div>
           </div>
         </div>
+      
+        
       </main>
     </div>
   </div>
