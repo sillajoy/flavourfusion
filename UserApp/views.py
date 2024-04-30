@@ -9,15 +9,10 @@ from django.contrib import messages
 
 def home(request, sub_category_id=None):
     """
-    Retrieve the user's viewed post list from the session if the user
-    is logged in. Determine the most viewed recipe from the list and
-    fetch recommended recipes based on its subcategory. Retrieve main
-    categories, active events, and advertisements. If a subcategory ID
-    is provided, filter recipes by that subcategory. Otherwise, retrieve
-    random recipes. Render the 'home.html' template with the retrieved
-    data.
-    Renders the 'home.html' template with recipes,
-    categories, events, advertisements, and recommended recipes.
+    View function for rendering the home page with recipe posts and recommendations.
+
+    Returns:
+        HttpResponse: Rendered home page with recipe posts and recommendations.
     """
     if 'user_id' in request.session:
         try:
@@ -73,9 +68,13 @@ def search_view(request):
     Display search results for recipes.
 
     Retrieve the search query from the POST request. If a query is provided,
-    search for recipes with titles or authors containing the query text.
-    Otherwise, return an empty queryset. Render the 'searched.html' template
-    with the search results and all main categories.
+    search for recipes with titles, authors, or subcategory names containing
+    the query text. Otherwise, return an empty queryset. Render the 'searched.html'
+    template with the search results, all main categories, and all subcategories.
+
+    Returns:
+        HttpResponse: Rendered 'searched.html' template with search results, main categories, 
+        subcategories, and search query.
     """
     query = request.POST.get('search')
     main_categories = MainCategoryModel.objects.all()
@@ -129,6 +128,15 @@ def about(request):
 
 
 def view(request, recipe_id):
+    """
+    Display details of a recipe post.
+
+    Retrieve the recipe details and associated images based on the recipe ID.
+    If the user is authenticated, update the viewed post subcategory list in the session.
+    If not authenticated, update the viewed post subcategory list in the cookies.
+    Render the 'recipe_details1.html' template with the recipe details and images.
+
+    """
     recipe = get_object_or_404(RecipePostModel, pk=recipe_id)
     images = RecipeImagesModel.objects.filter(recipe=recipe_id)
     
@@ -165,6 +173,16 @@ def view(request, recipe_id):
 
 
 def view2(request):
+    """
+    Display details of a recipe post and handle comments.
+
+    If the request method is POST, retrieve the recipe details and associated information
+    based on the provided post ID. Additionally, handle new comments submitted by users.
+    Render the 'recipe_details2.html' template with the recipe details, procedure steps,
+    additional notes, nutrition facts, ingredients, tags, comments, and the post ID.
+
+    If the request method is not POST, redirect to the homepage.
+    """
     if request.method == 'POST':
         post_id = request.POST.get('id') 
         print("Post ID:", post_id)  
@@ -208,15 +226,16 @@ def view2(request):
 
 def login(request):
     """
-    Log in the user with provided credentials.
+    Log in the user or admin with provided credentials.
 
     If the request method is POST, attempt to authenticate the user
-    with the provided username and password. If authentication is
-    successful, set the 'user_id' in the session to the user's ID and
-    redirect to the URL specified by the 'next' parameter in the request,
-    or to the homepage ('/') if no 'next' parameter is provided. If
-    authentication fails or if the request method is not POST, render
-    the 'login.html' template.
+    or admin with the provided username and password based on the
+    'login_type' parameter. If authentication is successful, set the
+    'user_id' or 'admin_id' in the session accordingly and redirect to
+    the URL specified by the 'next' parameter in the request, or to the
+    homepage ('/') if no 'next' parameter is provided. If authentication
+    fails or if the request method is not POST, render the 'login_new.html'
+    template.
 
     """
     if request.method == 'POST':
@@ -240,6 +259,16 @@ def login(request):
 
 
 def register_new_user(request):
+    """
+    Register a new user with provided credentials.
+
+    If the request method is POST, attempt to register a new user
+    with the provided username and password. If registration is
+    successful, set the 'user_id' in the session to the newly created
+    user's ID and redirect to the homepage ('/'). If the request method
+    is not POST, render the 'register.html' template.
+
+    """
     if request.method == 'POST':
         username = request.POST.get('name')
         password = request.POST.get('password')
@@ -281,16 +310,26 @@ def profile(request):
     if 'user_id' in request.session:
         user_id = request.session['user_id']
         user = UserModel.objects.filter(user_id=user_id).first()
+        
         user_recipe_posts = RecipePostModel.objects.filter(user_id=user, is_archived=False)
-        archive_recipe_posts = RecipePostModel.objects.filter(user_id=user, is_archived=True)
+        archive_recipe_posts = RecipePostModel.objects.filter(user_id=user, is_archived=True)        
         user_recipe_posts_count = user_recipe_posts.count()
 
         return render(request, 'profile.html', {'user': [user], 'user_recipe_posts': user_recipe_posts, 'user_recipe_posts_count': user_recipe_posts_count, 'archive_recipe_posts': archive_recipe_posts})
     else:
         return redirect('/login')
-    
 
 def update_user(request):
+    """
+    Update user profile information.
+
+    If the user is logged in, retrieve the user's information and display
+    the 'update_user.html' template. If the request method is POST, update
+    the user's profile information based on the provided data. Redirect to
+    the profile page after successful update. If the user is not logged in,
+    redirect to the login page.
+
+    """
     if 'user_id' in request.session:
         user_id = request.session['user_id']
         user = UserModel.objects.filter(user_id=user_id).first()
@@ -316,6 +355,16 @@ def update_user(request):
 
     
 def delete_user_recipe(request, id):
+    """
+    Delete a recipe post belonging to the logged-in user.
+
+    Retrieve the recipe post based on the provided ID. If the user is
+    logged in and the recipe post belongs to the user, delete the recipe
+    post and redirect to the profile page. If the user is not logged in
+    or the recipe post does not belong to the user, redirect to the
+    profile page without performing any action.
+
+    """
     recipe = RecipePostModel.objects.get(post_id=id)
     recipe.delete()
     return redirect('/profile')
@@ -339,13 +388,11 @@ def save(request, id):
 
 def saved_recipes(request):
     """
-    Render saved recipes for the logged-in user.
+    Save a recipe for the logged-in user.
 
-    If the user is logged in, retrieve and render the saved recipes
-    associated with the user. If the user is not logged in, redirect
-    to the login page. Renders the 'saved.html' template with saved recipes
-    for the logged-in user, or redirects to the login page if the user
-    is not logged in.
+    If the user is logged in and the recipe hasn't been saved already,
+    create a new entry in the SavedRecipe table associating the recipe
+    with the user. Then, redirect to the '/saved_recipes' URL.
 
     """
     if 'user_id' in request.session:
@@ -358,7 +405,7 @@ def saved_recipes(request):
     
 def delete_saved_recipe(request, id):
     """
-    Delete a saved recipe. Returns: HttpResponseRedirect: Redirects to '/saved_recipes' after deletion. Raises: Http404: If the saved recipe does not exist or does not belong to the user.
+    Delete a saved recipe. Redirects to '/saved_recipes' after deletion. Raises: Http404: If the saved recipe does not exist or does not belong to the user.
     """
     if 'user_id' in request.session:
         user_id = request.session['user_id']
@@ -368,6 +415,16 @@ def delete_saved_recipe(request, id):
 
 
 def add_new_recipe(request):
+    """
+    Add a new recipe post.
+
+    If the user is logged in, retrieve the user's information, available subcategories,
+    and events. If the request method is POST, save the recipe details, nutritional facts,
+    ingredients, cooking procedure, images, and tags submitted in the form. Finally, redirect
+    to the profile page. If the user is not logged in or if the request method is not POST,
+    render the 'add_new_recipe.html' template with the available subcategories and events.
+
+    """
     if 'user_id' in request.session:
         user_id = request.session['user_id']
         user = UserModel.objects.get(user_id=user_id)
@@ -467,6 +524,14 @@ def add_new_recipe(request):
     return render(request, 'add_new_recipe.html', {'subcategories': subcategories, 'events': events})
 
 def recipe_update_details(request, id):
+    """
+    Update details of a recipe.
+
+    Retrieve the recipe post based on the provided ID. If the request method is POST,
+    update the recipe details, nutritional facts, ingredients, cooking procedure, images,
+    and tags based on the provided data. Finally, redirect to the profile page.
+
+    """
     recipe = get_object_or_404(RecipePostModel, post_id=id)  
 
     if request.method == 'POST':
@@ -565,6 +630,14 @@ def recipe_update_details(request, id):
 
 
 def grocery(request):
+    """
+    Display the grocery list for the logged-in user.
+
+    If the user is logged in, retrieve the shopping list items associated with the user.
+    Group the items by recipe. Finally, render the 'grocery.html' template with the grouped
+    items. If the user is not logged in, redirect to the login page.
+
+    """
     if 'user_id' in request.session:
         user_id = request.session['user_id']
         list_items = ShoppingListItem.objects.filter(user_id=user_id)
@@ -584,6 +657,15 @@ def grocery(request):
 
 
 def add_ingredients(request):
+    """
+    Add ingredients to the user's shopping list.
+
+    If the user is logged in and the request method is POST, retrieve the ingredient ID
+    from the POST data and add the corresponding ingredient to the user's shopping list.
+    Then, render the 'grocery.html' template with the updated shopping list items grouped
+    by recipe. If the user is not logged in, redirect to the login page.
+
+    """
     if 'user_id' in request.session:
         if request.method == 'POST':
             ingredient_id = request.POST.get('ingredient_id')
@@ -614,6 +696,14 @@ def add_ingredients(request):
 
 
 def delete_item(request, item_id):
+    """
+    Delete an item from the user's shopping list.
+
+    If the user is logged in, delete the shopping list item with the provided ID.
+    Then, redirect to the 'grocery' page. If the user is not logged in, no action
+    is taken.
+
+    """
     if 'user_id' in request.session:
         ShoppingListItem.objects.filter(pk=item_id).delete()
         messages.success(request, 'Ingredient deleted successfully.')
@@ -621,6 +711,14 @@ def delete_item(request, item_id):
 
 
 def user_profile(request, id):
+    """
+    Display the profile page for a specific user.
+
+    Retrieve the user information and their recipe posts based on the provided user ID.
+    Then, render the 'user_profile.html' template with the user's details and the count
+    of their recipe posts.
+
+    """
     user = UserModel.objects.get(user_id=id)
     user_recipe_posts = RecipePostModel.objects.filter(user_id=user, is_archived=False)
     user_recipe_posts_count = user_recipe_posts.count()
@@ -628,6 +726,15 @@ def user_profile(request, id):
 
 
 def submit_feedback(request):
+    """
+    Submit feedback from the user.
+
+    If the request method is POST, retrieve the rating and feedback from the form data.
+    If the user is logged in, associate the feedback with the user and save it to the database.
+    Then, redirect to the '/about' page. If the user is not logged in, redirect to the login page.
+    If the request method is not POST, render the 'feedback.html' template.
+
+    """
     if request.method == 'POST':
         rating = request.POST.get('rating')
         feedback = request.POST.get('feedback')
@@ -647,6 +754,13 @@ def submit_feedback(request):
     return render(request, 'feedback.html')
 
 def archive_recipe_post(request, post_id):
+    """
+    Archive a recipe post.
+
+    If the user is logged in, archive the recipe post with the provided ID by setting
+    its 'is_archived' attribute to True. Then, redirect to the '/profile' page.
+
+    """
     recipe_post = get_object_or_404(RecipePostModel, pk=post_id)
 
     recipe_post.is_archived = True
@@ -654,7 +768,15 @@ def archive_recipe_post(request, post_id):
 
     return redirect('/profile')
 
-def archive_recipe_post(request):
+def archived_recipe_post(request):
+    """
+    Display archived recipe posts for the logged-in user.
+
+    If the user is logged in, retrieve the archived recipe posts associated with the user
+    and render the 'archived.html' template with the archived recipe posts. If the user
+    is not logged in, redirect to the login page.
+
+    """
     if 'user_id' in request.session:
         user_id = request.session['user_id']
         user = UserModel.objects.filter(user_id=user_id).first()
@@ -665,9 +787,16 @@ def archive_recipe_post(request):
         return redirect('/login')
     
 def unarchive_recipe_post(request, post_id):
+    """
+    Unarchive a recipe post.
+
+    If the user is logged in, unarchive the recipe post with the provided ID by setting
+    its 'is_archived' attribute to False. Then, redirect to the '/profile' page.
+
+    """
     recipe_post = get_object_or_404(RecipePostModel, pk=post_id)
 
     recipe_post.is_archived = False
     recipe_post.save()
 
-    return redirect('/profile') 
+    return redirect('/profile')
