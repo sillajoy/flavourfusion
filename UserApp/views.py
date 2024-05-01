@@ -19,7 +19,6 @@ def home(request, sub_category_id=None):
             user_id = request.session['user_id']
             user = UserModel.objects.get(pk=user_id)
             viewed_post_subcategory_list = request.session.get(f'viewed_post_subcategory_list_{user.user_name}', [])
-            print(f"User: {user.user_name}, Viewed Post Subcategory List: {viewed_post_subcategory_list}")
 
             if viewed_post_subcategory_list:
                 most_common_subcategory_id = Counter(viewed_post_subcategory_list).most_common(1)[0][0]
@@ -79,7 +78,6 @@ def search_view(request):
     query = request.POST.get('search')
     main_categories = MainCategoryModel.objects.all()
     subcategories = SubCategoryModel.objects.all()
-    print("Request POST data:", request.POST)
 
     results = RecipePostModel.objects.filter(is_archived=False)
 
@@ -164,7 +162,6 @@ def view(request, recipe_id):
         response.set_cookie('viewed_post_subcategory_list', json.dumps(viewed_post_subcategory_list))
         storage_type = "cookie"
 
-    print(f"Appended list in {storage_type}:", viewed_post_subcategory_list)
 
     if storage_type == "cookie":
         return response
@@ -185,7 +182,6 @@ def view2(request):
     """
     if request.method == 'POST':
         post_id = request.POST.get('id') 
-        print("Post ID:", post_id)  
         recipe = get_object_or_404(RecipePostModel, pk=post_id)
         procedure_steps = ProcedureStep.objects.filter(recipe=recipe).order_by('step_order')
         additional_notes = recipe.post_additional_notes_by_chef
@@ -196,7 +192,6 @@ def view2(request):
 
         new_comment_text = request.POST.get('comment')
         postid = request.POST.get('id')
-        print("Hidden ID:", postid)
         if new_comment_text:
             if 'user_id' in request.session:
                 user_id = request.session['user_id']
@@ -242,7 +237,6 @@ def login(request):
         username = request.POST.get('name')
         password = request.POST.get('password')
         login_type = request.POST.get('login_type')
-        print(f"Login Attempt: username={username}, password={password}, login_type={login_type}")
         if login_type == 'user':
             user = UserModel.objects.filter(user_name=username, user_password=password).first()
             if user:
